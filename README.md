@@ -74,6 +74,7 @@
 - 유튜브 채널 배너(2048×1152, NOCT ENTERTAINMENT 로고 중앙): `data/assets.json` 의 `youtubeBanner`
 - 유튜브 채널 번역문(15개 언어, 붙여넣기용): `docs/youtube-channel-translations.md`
 - 유튜브 영상 워터마크(150×150 투명 PNG): `assets/youtube-watermark-mark.png`(달 마크 블루), `-mark-white.png`(흰색), `-wordmark.png`(NOCT 글자)
+- 홈페이지 · 유튜브 채널 전체 정리 문서: `docs/overview.md`
 
 ## 로컬에서 보기
 
