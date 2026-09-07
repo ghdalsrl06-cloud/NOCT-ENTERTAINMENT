@@ -6,11 +6,12 @@
     "subtitle": "SHINYA CLUB 1집 · 종이의 운",
     "date": "2026.09.11",
     "badge": "NEXT",
-    "cover": "https://shinya-music.com/images/covers/shinya-mix-club1-pre.jpg",
+    "cover": "https://shinya-music.com/images/covers/album-6.jpg",
     "link": "https://distrokid.com/hyperfollow/shinya1/paper-luck",
     "artist": "SHINYA",
     "release": "2026-09-11",
-    "presave": "https://distrokid.com/hyperfollow/shinya1/paper-luck"
+    "presave": "https://distrokid.com/hyperfollow/shinya1/paper-luck",
+    "albumId": "club-1"
   },
   {
     "type": "music",
@@ -22,7 +23,8 @@
     "cover": "https://shinya-music.com/images/covers/album-5.jpg",
     "link": "https://www.youtube.com/watch?v=aR959SVwtuE",
     "artist": "SHINYA",
-    "release": "2026-09-04"
+    "release": "2026-09-04",
+    "albumId": "orig-5"
   },
   {
     "type": "webtoon",
@@ -49,11 +51,12 @@
     "title": "Second Wind",
     "subtitle": "SHINYA CLUB 2집 · 두 번째 숨",
     "date": "2026.09.18",
-    "cover": "https://shinya-music.com/images/covers/shinya-mix-club2-pre.jpg",
+    "cover": "https://shinya-music.com/images/covers/album-7.jpg",
     "link": "https://distrokid.com/hyperfollow/shinya1/second-wind",
     "artist": "SHINYA",
     "release": "2026-09-18",
-    "presave": "https://distrokid.com/hyperfollow/shinya1/second-wind"
+    "presave": "https://distrokid.com/hyperfollow/shinya1/second-wind",
+    "albumId": "club-2"
   },
   {
     "type": "music",
@@ -61,11 +64,12 @@
     "title": "Blue Hour",
     "subtitle": "SHINYA AFTER 1집 · 파란 시간",
     "date": "2026.09.25",
-    "cover": "https://shinya-music.com/images/covers/shinya-mix-after1-pre.jpg",
+    "cover": "https://shinya-music.com/images/covers/album-8.jpg",
     "link": "https://distrokid.com/hyperfollow/shinya1/blue-hour",
     "artist": "SHINYA",
     "release": "2026-09-25",
-    "presave": "https://distrokid.com/hyperfollow/shinya1/blue-hour"
+    "presave": "https://distrokid.com/hyperfollow/shinya1/blue-hour",
+    "albumId": "after-1"
   },
   {
     "type": "music",
@@ -73,11 +77,12 @@
     "title": "Empty Room",
     "subtitle": "SHINYA AFTER 2집 · 빈 방",
     "date": "2026.10.02",
-    "cover": "https://shinya-music.com/images/covers/shinya-mix-after2-pre.jpg",
+    "cover": "https://shinya-music.com/images/covers/album-9.jpg",
     "link": "https://distrokid.com/hyperfollow/shinya1/empty-room",
     "artist": "SHINYA",
     "release": "2026-10-02",
-    "presave": "https://distrokid.com/hyperfollow/shinya1/empty-room"
+    "presave": "https://distrokid.com/hyperfollow/shinya1/empty-room",
+    "albumId": "after-2"
   },
   {
     "type": "music",
@@ -85,10 +90,11 @@
     "title": "朝のすぐ手前で",
     "subtitle": "SHINYA 6집 · 아침 바로 앞에서",
     "date": "2026.10.09",
-    "cover": "https://shinya-music.com/images/covers/album-6.jpg",
+    "cover": "https://shinya-music.com/images/covers/album-10.jpg",
     "link": "https://shinya-music.com/ko/music/",
     "artist": "SHINYA",
-    "release": "2026-10-09"
+    "release": "2026-10-09",
+    "albumId": "orig-6"
   },
   {
     "type": "music",
@@ -96,10 +102,11 @@
     "title": "Still Daylight",
     "subtitle": "SHINYA AFTER 3집 · 거긴 아직 낮",
     "date": "2026.10.16",
-    "cover": "https://shinya-music.com/images/covers/shinya-mix-after3-pre.jpg",
+    "cover": "https://shinya-music.com/images/covers/album-11.jpg",
     "link": "https://shinya-music.com/ko/music/",
     "artist": "SHINYA",
-    "release": "2026-10-16"
+    "release": "2026-10-16",
+    "albumId": "after-3"
   },
   {
     "type": "music",
@@ -109,7 +116,8 @@
     "date": "2026",
     "cover": "https://shinya-music.com/images/covers/album-4.jpg",
     "link": "https://www.youtube.com/watch?v=PVwJ5X9T6dA",
-    "artist": "SHINYA"
+    "artist": "SHINYA",
+    "albumId": "orig-4"
   },
   {
     "type": "video",
@@ -128,7 +136,8 @@
     "date": "2026",
     "cover": "https://shinya-music.com/images/covers/album-3.jpg",
     "link": "https://www.youtube.com/watch?v=M4s5tCBoHoY",
-    "artist": "SHINYA"
+    "artist": "SHINYA",
+    "albumId": "orig-3"
   },
   {
     "type": "music",
@@ -138,7 +147,8 @@
     "date": "2026",
     "cover": "https://shinya-music.com/images/covers/album-2.jpg",
     "link": "https://www.youtube.com/watch?v=a8MX1d4HMtE",
-    "artist": "SHINYA"
+    "artist": "SHINYA",
+    "albumId": "orig-2"
   },
   {
     "type": "music",
@@ -148,7 +158,8 @@
     "date": "2026",
     "cover": "https://shinya-music.com/images/covers/album-1.jpg",
     "link": "https://www.youtube.com/watch?v=eSuk6hPMKdg",
-    "artist": "SHINYA"
+    "artist": "SHINYA",
+    "albumId": "orig-1"
   },
   {
     "type": "webtoon",

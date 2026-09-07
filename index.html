@@ -207,11 +207,22 @@
         </div>
         <div class="table-wrap">
           <table class="catalog" id="catalog">
-            <thead><tr><th>#</th><th>곡</th><th>아티스트</th><th>앨범</th><th>라인</th><th>BPM · 무드</th><th>공개</th><th></th></tr></thead>
+            <thead><tr><th class="th-pick" aria-label="담기"></th><th>#</th><th>곡</th><th>아티스트</th><th>앨범</th><th>라인</th><th>BPM · 무드</th><th>공개</th><th></th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
-        <p class="catalog-note" id="catalog-count"></p>
+        <div class="catalog-foot">
+          <p class="catalog-note" id="catalog-count"></p>
+          <div id="catalog-pages" class="pages"></div>
+          <label class="page-size">한 페이지에
+            <select id="page-size" aria-label="페이지당 곡 수">
+              <option value="10">10곡</option>
+              <option value="20" selected>20곡</option>
+              <option value="50">50곡</option>
+              <option value="all">전체</option>
+            </select>
+          </label>
+        </div>
       </div>
     </section>
 
@@ -294,6 +305,22 @@
     </section>
 
   </main>
+
+  <!-- 곡 담기 바 : 라이선싱에서 곡을 고르면 나타남 -->
+  <div id="pick-bar" class="pick-bar" hidden>
+    <span>선택 <b id="pick-count">0</b>곡</span>
+    <button class="btn btn-sm btn-ghost" id="pick-clear">비우기</button>
+    <button class="btn btn-sm btn-primary" id="pick-inquire">라이선스 문의</button>
+  </div>
+
+  <!-- 앨범 트랙리스트 패널 (JS가 내용을 채움) -->
+  <div id="album-panel" class="panel-wrap" hidden>
+    <div class="panel-overlay"></div>
+    <aside class="panel-box" role="dialog" aria-modal="true" aria-label="앨범 트랙리스트">
+      <button class="panel-close" aria-label="닫기">✕</button>
+      <div class="panel-body"></div>
+    </aside>
+  </div>
 
   <footer class="footer">
     <div class="footer-inner">
