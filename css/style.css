@@ -138,6 +138,8 @@ h1, h2, h3 { font-weight: 500; letter-spacing: -0.01em; }
 }
 /* 아티스트 사진 : 16:9 영역에 원본 전체 표시 + 흐린 배경 채움 */
 .artist-media { position: relative; aspect-ratio: 5/4; overflow: hidden; background: var(--surface-2); }
+.artist-media.is-square { aspect-ratio: 1; }
+.artist-media.is-square img { object-fit: cover; }
 .artist-media::before { content: ""; position: absolute; inset: -12%; background: var(--img) center / cover no-repeat; filter: blur(24px) brightness(.4); }
 .artist-media img { position: relative; width: 100%; height: 100%; object-fit: contain; display: block; }
 .artist-body { padding: 28px 30px 30px; }
@@ -282,6 +284,11 @@ h1, h2, h3 { font-weight: 500; letter-spacing: -0.01em; }
 .footer { border-top: 1px solid var(--line); background: #07080c; }
 .footer-inner { max-width: var(--max); margin: 0 auto; padding: 40px 24px; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
 .footer .muted { font-size: .8rem; margin-top: 6px; }
+/* 워드마크의 C = 검은 달 : 글자 흐름 안에 들어가는 인라인 SVG (글꼴 크기를 그대로 따름) */
+.wm-main { display: inline-flex; align-items: center; }
+.wm-c { width: .84em; height: .84em; margin: 0 .05em 0 .02em; vertical-align: -.02em; overflow: visible; flex: none; }
+.wm-c path { fill: #0d0f18; stroke: var(--accent-soft); stroke-width: 3.2; stroke-linejoin: round; filter: drop-shadow(0 0 3px rgba(111,140,255,.55)); }
+.footer-wordmark { display: inline-flex; margin-bottom: 4px; }
 .footer-links { list-style: none; display: flex; gap: 20px; flex-wrap: wrap; }
 .footer-links a { white-space: nowrap; }
 .footer-links a { font-size: .85rem; color: var(--muted); }
