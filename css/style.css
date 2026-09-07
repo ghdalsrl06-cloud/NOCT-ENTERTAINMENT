@@ -137,7 +137,7 @@ h1, h2, h3 { font-weight: 500; letter-spacing: -0.01em; }
   background: var(--surface); border: 1px solid var(--line); border-radius: 20px; overflow: hidden;
 }
 /* 아티스트 사진 : 16:9 영역에 원본 전체 표시 + 흐린 배경 채움 */
-.artist-media { position: relative; aspect-ratio: 16/9; overflow: hidden; background: var(--surface-2); }
+.artist-media { position: relative; aspect-ratio: 5/4; overflow: hidden; background: var(--surface-2); }
 .artist-media::before { content: ""; position: absolute; inset: -12%; background: var(--img) center / cover no-repeat; filter: blur(24px) brightness(.4); }
 .artist-media img { position: relative; width: 100%; height: 100%; object-fit: contain; display: block; }
 .artist-body { padding: 28px 30px 30px; }
@@ -770,10 +770,11 @@ a.news-row:hover, button.news-row:hover { background: var(--surface); }
 
 /* 아티스트 히어로 + 오디션 카드 */
 .home-artist-list.is-hero { grid-template-columns: 1fr 300px; align-items: stretch; }
-.artist-hero { display: grid; grid-template-columns: 300px 1fr; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; }
-.artist-hero-media { position: relative; display: block; min-height: 380px; background: var(--surface-2); }
+.artist-hero { display: grid; grid-template-columns: 320px 1fr; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; }
+.artist-hero-media { position: relative; display: block; min-height: 380px; background: var(--surface-2); overflow: hidden; }
 .artist-hero-media::before { content: ""; position: absolute; inset: -12%; background: var(--img) center / cover no-repeat; filter: blur(24px) brightness(.4); }
-.artist-hero-media img { position: relative; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s; }
+/* 사진 전체가 보이도록 contain + 흐린 배경 채움 (어떤 비율의 사진이 와도 잘리지 않음) */
+.artist-hero-media img { position: relative; width: 100%; height: 100%; object-fit: contain; display: block; transition: transform .6s; }
 .artist-hero-media:hover img { transform: scale(1.03); }
 .artist-hero-body { padding: 30px 32px 32px; min-width: 0; }
 .artist-hero-body .artist-name { font-size: 2.2rem; margin-top: 8px; }
@@ -782,7 +783,7 @@ a.news-row:hover, button.news-row:hover { background: var(--surface); }
 .artist-hero-body .chips { margin-top: 14px; }
 .eyebrow.small { font-size: .62rem; margin-top: 22px; }
 .album-strip { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
-.album-mini { width: 118px; background: none; border: 0; padding: 0; text-align: left; cursor: pointer; color: inherit; font: inherit; }
+.album-mini { width: 108px; background: none; border: 0; padding: 0; text-align: left; cursor: pointer; color: inherit; font: inherit; }
 .album-mini .cover-img { position: relative; display: block; aspect-ratio: 1; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); transition: border-color .3s, transform .3s; }
 .album-mini:hover .cover-img { border-color: var(--accent); transform: translateY(-3px); }
 .album-mini b { display: block; font-weight: 500; font-size: .8rem; margin-top: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -812,7 +813,7 @@ a.news-row:hover, button.news-row:hover { background: var(--surface); }
   .spot-dday { position: static; text-align: left; padding: 22px 24px 0; }
   .spot-dday b { font-size: 2rem; }
   .artist-hero { grid-template-columns: 1fr; }
-  .artist-hero-media { min-height: 0; aspect-ratio: 4/3; }
+  .artist-hero-media { min-height: 0; aspect-ratio: 3/4; }
   .artist-hero-body { padding: 24px; }
   .home-sec .section-num { top: 24px; }
   .ticker-item { padding: 0 16px; }
