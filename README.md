@@ -71,7 +71,7 @@
 - 입체 렌더: `data/assets.json` 의 `logo3d`(심벌 1:1, 프로필용) · `logoLockup`(심벌 + NOCT + ENTERTAINMENT 16:9, 링크 미리보기 og:image) · `logoNoct`(NOCT + ENTERTAINMENT, C 자리에 달 마크, 16:9)
 - NOCT 단독 워드마크(C = 달 마크) 벡터: `assets/logo-noct.svg` · PNG `assets/logo-noct.png`
 - 유튜브 채널 프로필(정사각): `data/assets.json` 의 `youtubeAvatar`(검은 가면 인물), `youtubeAvatarText`(NOCT 텍스트만)
-- 유튜브 채널 배너(16:9, NOCT ENTERTAINMENT 로고 중앙): `data/assets.json` 의 `youtubeBanner`
+- 유튜브 채널 배너(2048×1152, NOCT ENTERTAINMENT 로고 중앙): `data/assets.json` 의 `youtubeBanner`
 
 ## 로컬에서 보기
 
