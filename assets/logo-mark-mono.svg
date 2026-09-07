@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="NOCT 심벌" fill="currentColor">
+  <!-- 단색 버전 : CSS color 로 색을 바꿔 쓰는 용도 (내비·푸터·워터마크) -->
+  <path d="M32 6 A26 26 0 1 0 32 58 A34 34 0 0 1 32 6 Z"/>
+  <rect x="33" y="27" width="5" height="10" rx="2.5"/>
+  <rect x="41" y="22" width="5" height="20" rx="2.5"/>
+  <rect x="49" y="16" width="5" height="32" rx="2.5"/>
+</svg>

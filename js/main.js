@@ -34,10 +34,11 @@ async function loadJSON(path) {
 // 아티스트가 늘어나도 카드가 자동으로 늘어나는 그리드. 마지막엔 "데모 보내기" 카드가 붙어요.
 function renderArtists(list) {
   const root = $("#artist-list");
+  // 아티스트 탭 카드는 정사각 이미지(imageSquare)를 우선 사용, 없으면 기본 이미지
   root.innerHTML = list.map((a) => `
     <article class="artist-card reveal">
-      <div class="artist-media" style="--img:url('${esc(a.image)}')">
-        <img src="${esc(a.image)}" alt="${esc(a.name)}" loading="lazy" style="object-position:${esc(a.imagePos || "center")}" />
+      <div class="artist-media ${a.imageSquare ? "is-square" : ""}" style="--img:url('${esc(a.imageSquare || a.image)}')">
+        <img src="${esc(a.imageSquare || a.image)}" alt="${esc(a.name)}" loading="lazy" style="object-position:${esc(a.imagePos || "center")}" />
       </div>
       <div class="artist-body">
         <p class="eyebrow">${esc(a.role)}</p>

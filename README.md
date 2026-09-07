@@ -42,6 +42,7 @@
 │   ├── news.json       ← 뉴스 (BLOG / WEBTOON / NOTICE — 발매 소식은 works.json에서 자동)
 │   ├── store.json      ← 스토어 상품
 │   └── assets.json     ← 키비주얼 등 이미지 주소
+├── assets/             ← 로고 SVG (logo-mark · logo-mark-mono · logo-wordmark · favicon)
 └── .gitignore
 ```
 
@@ -58,10 +59,16 @@
   ```
   `tag`는 `BLOG`(비하인드) · `WEBTOON` · `NOTICE`(공지) 중 하나. `RELEASE`는 works.json에서 자동 생성되니 직접 넣지 않아도 돼요.
 - **라이선싱 곡**: `data/licensing.json` 에 `{ title, titleKo, album, line, bpm, mood, preview }` 추가
-- **새 아티스트**: `data/artists.json` 에 추가하면 카드가 자동 생성
+- **새 아티스트**: `data/artists.json` 에 추가하면 카드가 자동 생성 — `image`(세로, 홈용) + `imageSquare`(정사각, 아티스트 탭용)
 - **상품 출시**: `data/store.json` 에서 `"status": "live"` 로 바꾸고 `link` 추가
 - **브랜드 색 변경**: `css/style.css` 맨 위 `--accent` 값 하나만 수정
 - **JS/CSS를 고쳤을 때**: `index.html`의 `?v=` 숫자를 올려주세요 (`css/style.css?v=…`, `js/main.js?v=…`). GitHub Pages가 10분간 파일을 캐시해서, 이걸 안 올리면 새 HTML + 옛 JS가 섞여 화면이 깨질 수 있어요.
+
+## 브랜드
+
+- 심벌: 초승달(밤) 안에서 흘러나오는 사운드 바(음악). `assets/logo-mark.svg`(컬러) · `assets/logo-mark-mono.svg`(단색, CSS color 상속) · `assets/logo-wordmark.svg`(가로 조합) · `assets/favicon.svg`
+- 색: 미드나잇 네이비 `#0a0b10` · 일렉트릭 블루 `#6f8cff` · 소프트 블루 `#a9b8ff` · 웜 화이트 `#ecebe6`
+- 입체 렌더(프로필·SNS용): `data/assets.json` 의 `logo3d` (링크 미리보기 og:image 로도 사용)
 
 ## 로컬에서 보기
 

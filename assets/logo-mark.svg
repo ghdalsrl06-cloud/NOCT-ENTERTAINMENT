@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="NOCT 심벌">
+  <!-- NOCT 심벌 : 초승달(밤) 안에서 흘러나오는 사운드 바(음악). currentColor로 색을 물려받아 어디서든 한 색으로 쓸 수 있음 -->
+  <defs>
+    <linearGradient id="n-moon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a9b8ff"/>
+      <stop offset="1" stop-color="#6f8cff"/>
+    </linearGradient>
+  </defs>
+  <!-- 초승달 : 바깥 원(r26) 왼쪽 반 + 안쪽으로 파인 완만한 호 -->
+  <path d="M32 6 A26 26 0 1 0 32 58 A34 34 0 0 1 32 6 Z" fill="url(#n-moon)"/>
+  <!-- 사운드 바 3개 : 달의 빈 자리에서 오른쪽으로 갈수록 커지는 파형 -->
+  <rect x="33" y="27" width="5" height="10" rx="2.5" fill="#6f8cff"/>
+  <rect x="41" y="22" width="5" height="20" rx="2.5" fill="#6f8cff"/>
+  <rect x="49" y="16" width="5" height="32" rx="2.5" fill="#6f8cff"/>
+</svg>
