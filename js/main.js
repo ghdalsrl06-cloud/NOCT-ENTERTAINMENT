@@ -445,9 +445,12 @@ function renderFeed(works) {
   const s0 = items[0], soon0 = isUpcoming(s0.release), d0 = dDay(s0.release);
   const spot = `
     <article class="spotlight reveal ${soon0 ? "is-soon" : ""}">
-      <div class="spot-media" style="--img:url('${esc(s0.cover)}')">
-        <img src="${esc(s0.cover)}" alt="${esc(s0.title)}" loading="lazy" />
-        ${s0.badge ? `<span class="work-badge">${esc(s0.badge)}</span>` : ""}
+      <div class="spot-media">
+        ${s0.type === "music" ? `<span class="vinyl" aria-hidden="true"><i></i></span>` : ""}
+        <span class="spot-cover" style="--img:url('${esc(s0.cover)}')">
+          <img src="${esc(s0.cover)}" alt="${esc(s0.title)}" loading="lazy" />
+          ${s0.badge ? `<span class="work-badge">${esc(s0.badge)}</span>` : ""}
+        </span>
       </div>
       <div class="spot-body">
         <span class="work-kind">${esc(KIND_LABEL[s0.type] || s0.type)}${s0.line ? " · " + esc(s0.line) : ""} · ${esc(s0.artist || "")}</span>
@@ -632,6 +635,7 @@ const VIEWS = $$(".view");
 function showView(id, opts = {}) {
   const target = VIEWS.some((v) => v.id === id) ? id : "home";
   VIEWS.forEach((v) => { v.hidden = v.id !== target; });
+  const field = $("#field3d"); if (field) field.hidden = target !== "home"; // 홈 전용 3D 배경
   $$(".nav-links a").forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + target));
   if (opts.scroll !== false) window.scrollTo({ top: 0, behavior: "instant" });
   observeReveal();
