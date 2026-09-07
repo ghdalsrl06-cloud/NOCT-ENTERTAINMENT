@@ -26,9 +26,19 @@
   <header class="nav">
     <div class="nav-inner">
       <a href="#top" class="wordmark" aria-label="NOCT 홈">
-        <span class="wm-main">NOCT</span>
-        <span class="wm-sub">ENTERTAINMENT</span>
+        <!-- NOCT 심볼 : 초승달 + 음파 (SVG로 직접 그림) -->
+        <svg class="wm-symbol" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M18 2.5a13.5 13.5 0 1 0 0 27 11 11 0 1 1 0-27z" fill="currentColor"/>
+          <rect x="19" y="12" width="2.2" height="8" rx="1.1" fill="currentColor"/>
+          <rect x="23" y="9" width="2.2" height="14" rx="1.1" fill="currentColor"/>
+          <rect x="27" y="13" width="2.2" height="6" rx="1.1" fill="currentColor"/>
+        </svg>
+        <span class="wm-text">
+          <span class="wm-main">NOCT</span>
+          <span class="wm-sub">ENTERTAINMENT</span>
+        </span>
       </a>
+      <span class="nav-clock" aria-label="도쿄 현재 시각">TOKYO <b id="nav-clock">--:--</b></span>
       <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false">☰</button>
       <nav>
         <ul class="nav-links">
@@ -46,8 +56,15 @@
 
   <!-- ===== 히어로 ===== -->
   <section id="top" class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
     <div class="hero-glow" aria-hidden="true"></div>
     <div class="hero-grid" aria-hidden="true"></div>
+    <canvas id="stars" class="hero-stars" aria-hidden="true"></canvas>
+    <!-- HUD : 계기판처럼 배치한 마이크로 정보 -->
+    <div class="hud hud-tl" aria-hidden="true">SYS.NOCT / v2.0<br />STATUS · ONLINE</div>
+    <div class="hud hud-tr" aria-hidden="true">35.68°N 139.69°E<br />TOKYO <span id="hero-clock">--:--:--</span> JST</div>
+    <div class="hud hud-bl" aria-hidden="true">MUSIC · WEBTOON · VIDEO</div>
+    <div class="hud hud-br" aria-hidden="true">SCROLL ↓</div>
     <div class="hero-inner">
       <p class="eyebrow hero-eyebrow">NOCTURNE-BORN CREATIVE LABEL · SEOUL ↔ TOKYO</p>
       <h1 class="hero-title">NOCT</h1>
@@ -152,13 +169,13 @@
       <h2>클럽 · 파트너</h2>
     </div>
     <div class="duo">
-      <div class="duo-card">
+      <div class="duo-card" data-bg="club">
         <p class="eyebrow">NOCT CLUB · 준비 중</p>
         <h3>밤을 먼저 듣는 사람들</h3>
         <p>미공개 데모, 비하인드, 선공개 음원과 웹툰 회차. 팬 멤버십을 준비하고 있어요. 오픈 소식을 가장 먼저 받고 싶다면 알림을 신청하세요.</p>
         <button class="btn btn-ghost" data-contact="멤버십 · 협업" data-detail="NOCT CLUB 오픈 알림 신청">오픈 알림 신청</button>
       </div>
-      <div class="duo-card">
+      <div class="duo-card" data-bg="partner">
         <p class="eyebrow">BRAND PARTNERSHIP</p>
         <h3>브랜드와 함께 만드는 밤</h3>
         <p>콜라보 음원, 브랜드 필름, 캐릭터 IP 협업, 팝업·이벤트 사운드 디자인. 밤의 무드가 필요한 브랜드라면 이야기 나눠요.</p>
@@ -222,6 +239,10 @@
       </ul>
     </div>
   </footer>
+
+  <!-- 커서를 따라다니는 푸른 글로우 + 화면 전체 필름 그레인 -->
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
 
   <script src="js/main.js"></script>
 </body>

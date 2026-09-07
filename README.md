@@ -60,7 +60,8 @@ python3 -m http.server 8000
 
 ## 앞으로
 
-- [ ] NOCT 로고 · 키비주얼 제작
+- [x] NOCT 심볼 로고(SVG) · 키비주얼 · 서비스/스토어/클럽 비주얼 (Higgsfield 생성, `data/assets.json` 등)
+- [x] 미래지향 디테일: HUD 라벨, 도쿄 실시간 시계, 별먼지 파티클, 커서 글로우, 카드 틸트, 필름 그레인
 - [ ] EN / JA 다국어
 - [ ] 스토어 결제 연동 (Gumroad · Stripe 등)
 - [ ] NOCT CLUB 멤버십 오픈

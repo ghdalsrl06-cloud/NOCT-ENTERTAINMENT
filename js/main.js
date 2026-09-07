@@ -86,7 +86,7 @@ function renderWorks(list) {
 function renderServices(list) {
   $("#service-grid").innerHTML = list.map((s) => `
     <article class="service reveal">
-      <div class="service-icon">${esc(s.icon)}</div>
+      ${s.image ? `<img class="service-img" src="${esc(s.image)}" alt="" loading="lazy" />` : `<div class="service-icon">${esc(s.icon)}</div>`}
       <h3>${esc(s.title)}</h3>
       <p>${esc(s.desc)}</p>
       <ul>${(s.deliverables || []).map((d) => `<li>${esc(d)}</li>`).join("")}</ul>
@@ -123,7 +123,7 @@ function renderCatalog() {
 function renderStore(list) {
   $("#store-grid").innerHTML = list.map((p) => `
     <article class="product reveal">
-      <div class="product-visual">${esc(p.icon)}</div>
+      <div class="product-visual">${p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy" />` : esc(p.icon)}</div>
       <div class="product-body">
         <span class="product-status ${p.status === "live" ? "live" : ""}">${p.status === "live" ? "AVAILABLE" : "COMING SOON"}</span>
         <h3>${esc(p.title)}</h3>
@@ -203,15 +203,117 @@ function observeReveal() {
   $$(".reveal:not(.visible)").forEach((el) => io.observe(el));
 }
 
+// =====================================================
+// 미래지향 디테일
+// =====================================================
+const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const FINE_POINTER = window.matchMedia("(pointer: fine)").matches;
+
+// (2) 도쿄 실시간 시계 — 내비게이션(HH:MM)과 히어로 HUD(HH:MM:SS)
+function tickClock() {
+  const now = new Date();
+  const fmt = (opts) => new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Tokyo", hour12: false, ...opts }).format(now);
+  const nav = $("#nav-clock"), hero = $("#hero-clock");
+  if (nav) nav.textContent = fmt({ hour: "2-digit", minute: "2-digit" });
+  if (hero) hero.textContent = fmt({ hour: "2-digit", minute: "2-digit", second: "2-digit" });
+}
+tickClock();
+setInterval(tickClock, 1000);
+
+// (1) 섹션 번호 01 / 07
+function numberSections() {
+  const secs = $$("section[id]").filter((s) => s.id !== "top");
+  secs.forEach((s, i) => {
+    const head = $(".section-head", s);
+    if (!head) return;
+    const n = document.createElement("span");
+    n.className = "sec-num";
+    n.textContent = `${String(i + 1).padStart(2, "0")} / ${String(secs.length).padStart(2, "0")}`;
+    head.prepend(n);
+  });
+}
+numberSections();
+
+// (3) 히어로 별먼지 파티클
+function startStars() {
+  const canvas = $("#stars");
+  if (!canvas || REDUCED) return;
+  const ctx = canvas.getContext("2d");
+  let w, h, stars = [];
+  const resize = () => {
+    w = canvas.width = canvas.offsetWidth * devicePixelRatio;
+    h = canvas.height = canvas.offsetHeight * devicePixelRatio;
+    stars = Array.from({ length: Math.round((w * h) / 22000) }, () => ({
+      x: Math.random() * w, y: Math.random() * h,
+      r: (Math.random() * 1.2 + 0.3) * devicePixelRatio,
+      vx: (Math.random() - 0.5) * 0.08 * devicePixelRatio, vy: (Math.random() - 0.5) * 0.08 * devicePixelRatio,
+      a: Math.random() * Math.PI * 2, s: Math.random() * 0.02 + 0.005,
+    }));
+  };
+  resize();
+  window.addEventListener("resize", resize);
+  (function frame() {
+    ctx.clearRect(0, 0, w, h);
+    for (const st of stars) {
+      st.x += st.vx; st.y += st.vy; st.a += st.s;
+      if (st.x < 0) st.x = w; if (st.x > w) st.x = 0;
+      if (st.y < 0) st.y = h; if (st.y > h) st.y = 0;
+      ctx.globalAlpha = 0.35 + Math.sin(st.a) * 0.3; // 별이 은은하게 깜빡임
+      ctx.fillStyle = "#a9b8ff";
+      ctx.beginPath(); ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2); ctx.fill();
+    }
+    requestAnimationFrame(frame);
+  })();
+}
+startStars();
+
+// (3) 커서 스포트라이트
+if (FINE_POINTER && !REDUCED) {
+  const glow = $(".cursor-glow");
+  document.body.classList.add("has-cursor");
+  window.addEventListener("pointermove", (e) => {
+    glow.style.transform = `translate(${e.clientX - 210}px, ${e.clientY - 210}px)`;
+  }, { passive: true });
+}
+
+// (4) 카드 틸트 + 유리 하이라이트 — 렌더된 카드에 적용
+function applyTilt() {
+  const cards = $$(".work, .service, .product, .tier, .duo-card, .artist-card");
+  cards.forEach((card) => {
+    card.classList.add("tilt");
+    if (card.matches(".artist-card, .duo-card")) card.classList.add("bracket");
+    if (!FINE_POINTER || REDUCED) return;
+    const strength = card.matches(".artist-card, .duo-card") ? 2 : 6; // 큰 카드는 살짝만
+    card.addEventListener("pointermove", (e) => {
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+      card.style.setProperty("--mx", `${px * 100}%`);
+      card.style.setProperty("--my", `${py * 100}%`);
+      card.style.transform = `perspective(900px) rotateX(${(0.5 - py) * strength}deg) rotateY(${(px - 0.5) * strength}deg) translateY(-4px)`;
+    });
+    card.addEventListener("pointerleave", () => { card.style.transform = ""; });
+  });
+}
+
+// 이미지 에셋(키비주얼·배경)을 데이터에서 주입
+function applyAssets(assets) {
+  if (assets.hero) document.documentElement.style.setProperty("--hero-img", `url("${assets.hero}")`);
+  $$(".duo-card[data-bg]").forEach((card) => {
+    const src = assets[card.dataset.bg];
+    if (src) { card.style.backgroundImage = `url("${src}")`; card.classList.add("has-bg"); }
+  });
+}
+
 // ===== 시작 =====
 (async () => {
   try {
-    const [artists, works, services, licensing, store] = await Promise.all([
+    const [artists, works, services, licensing, store, assets] = await Promise.all([
       loadJSON("data/artists.json"),
       loadJSON("data/works.json"),
       loadJSON("data/services.json"),
       loadJSON("data/licensing.json"),
       loadJSON("data/store.json"),
+      loadJSON("data/assets.json").catch(() => ({})), // 아직 없으면 무시
     ]);
     renderArtists(artists);
     renderWorks(works);
@@ -219,6 +321,8 @@ function observeReveal() {
     TRACKS = licensing;
     renderCatalog();
     renderStore(store);
+    applyAssets(assets);
+    applyTilt();
     bindContactShortcuts();
     observeReveal();
 
