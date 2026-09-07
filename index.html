@@ -1,292 +1,249 @@
 <!DOCTYPE html>
 <!--
-  index.html : 홈페이지의 "뼈대"를 담당하는 파일입니다.
-  HTML은 화면에 어떤 내용(글, 사진, 버튼)이 들어갈지를 정합니다.
-  꾸미는 것(색, 크기, 배치)은 css/style.css 가 담당해요.
+  NOCT ENTERTAINMENT — 공식 홈페이지
+  index.html : 페이지 뼈대. 실제 콘텐츠(아티스트·작업물·서비스·곡 목록·상품)는
+  data/*.json 에 들어 있고, js/main.js 가 읽어와서 화면에 그립니다.
+  → 내용을 추가/수정할 땐 HTML이 아니라 data/ 폴더의 JSON만 고치면 돼요.
 -->
 <html lang="ko">
 <head>
-  <!-- 문자 인코딩: 한글이 깨지지 않게 하는 설정 -->
   <meta charset="UTF-8" />
-  <!-- 모바일 화면에서도 잘 보이게 하는 설정 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- 브라우저 탭에 표시되는 제목 -->
-  <title>Runa_Cafe | 루나 카페</title>
-  <!-- 구글 폰트 : 제목용(Gowun Batang)과 본문용(Noto Sans KR) 글꼴 불러오기 -->
+  <title>NOCT — 밤에 만드는 음악, 웹툰, 영상</title>
+  <meta name="description" content="NOCT ENTERTAINMENT. 다크 일렉트로닉 J-POP 아티스트 SHINYA를 비롯한 음악·웹툰·영상 콘텐츠를 제작하고, 음원 라이선싱과 제작 의뢰를 받습니다." />
+  <meta property="og:title" content="NOCT ENTERTAINMENT" />
+  <meta property="og:description" content="밤에 만드는 음악, 웹툰, 영상. 제작 의뢰 · 음원 라이선싱 · 스토어" />
+  <meta property="og:image" content="https://shinya-music.com/images/home/rooftop.jpg" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
-    rel="stylesheet"
-  />
-  <!-- 꾸미기 담당인 CSS 파일을 연결 -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-  <!-- ===== 상단 메뉴바 (네비게이션) ===== -->
-  <header class="navbar">
-    <div class="navbar-inner">
-      <a href="#home" class="logo">🌙 Runa_Cafe</a>
-      <!-- 모바일에서만 보이는 햄버거 버튼 (CSS에서 화면 크기에 따라 보이거나 숨겨짐) -->
-      <button class="menu-toggle" aria-label="메뉴 열기">☰</button>
+  <!-- ===== 상단 내비게이션 ===== -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="#top" class="wordmark" aria-label="NOCT 홈">
+        <!-- NOCT 심볼 : 초승달 + 음파 (SVG로 직접 그림) -->
+        <svg class="wm-symbol" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M18 2.5a13.5 13.5 0 1 0 0 27 11 11 0 1 1 0-27z" fill="currentColor"/>
+          <rect x="19" y="12" width="2.2" height="8" rx="1.1" fill="currentColor"/>
+          <rect x="23" y="9" width="2.2" height="14" rx="1.1" fill="currentColor"/>
+          <rect x="27" y="13" width="2.2" height="6" rx="1.1" fill="currentColor"/>
+        </svg>
+        <span class="wm-text">
+          <span class="wm-main">NOCT</span>
+          <span class="wm-sub">ENTERTAINMENT</span>
+        </span>
+      </a>
+      <span class="nav-clock" aria-label="도쿄 현재 시각">TOKYO <b id="nav-clock">--:--</b></span>
+      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false">☰</button>
       <nav>
         <ul class="nav-links">
-          <li><a href="#home">홈</a></li>
-          <li><a href="#menu">메뉴</a></li>
-          <li>
-            <a href="#reserve">예약·주문
-              <!-- 장바구니에 담긴 개수를 보여주는 배지 (JS가 숫자를 채움) -->
-              <span id="cart-badge" class="cart-badge" hidden>0</span>
-            </a>
-          </li>
-          <li><a href="#about">소개</a></li>
-          <li><a href="#location">오시는 길</a></li>
+          <li><a href="#artists">아티스트</a></li>
+          <li><a href="#works">작업</a></li>
+          <li><a href="#services">서비스</a></li>
+          <li><a href="#licensing">라이선싱</a></li>
+          <li><a href="#store">스토어</a></li>
+          <li><a href="#club">클럽 · 파트너</a></li>
+          <li><a href="#contact" class="nav-cta">문의하기</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <!-- ===== 첫 화면 (히어로 섹션) ===== -->
-  <section id="home" class="hero">
-    <!-- eyebrow : 제목 위에 놓는 작은 영문 레터링. 고급스러운 인상을 줘요 -->
-    <p class="hero-eyebrow">MOONLIGHT CAFE · SEOUL</p>
-    <h1>Runa_Cafe</h1>
-    <p>달빛처럼 은은한 하루의 쉼표, 루나 카페</p>
-    <a href="#menu" class="btn">메뉴 보러가기</a>
+  <!-- ===== 히어로 ===== -->
+  <section id="top" class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-grid" aria-hidden="true"></div>
+    <canvas id="stars" class="hero-stars" aria-hidden="true"></canvas>
+    <!-- HUD : 계기판처럼 배치한 마이크로 정보 -->
+    <div class="hud hud-tl" aria-hidden="true">SYS.NOCT / v2.0<br />STATUS · ONLINE</div>
+    <div class="hud hud-tr" aria-hidden="true">35.68°N 139.69°E<br />TOKYO <span id="hero-clock">--:--:--</span> JST</div>
+    <div class="hud hud-bl" aria-hidden="true">MUSIC · WEBTOON · VIDEO</div>
+    <div class="hud hud-br" aria-hidden="true">SCROLL ↓</div>
+    <div class="hero-inner">
+      <p class="eyebrow hero-eyebrow">NOCTURNE-BORN CREATIVE LABEL · SEOUL ↔ TOKYO</p>
+      <h1 class="hero-title">NOCT</h1>
+      <p class="hero-tagline">밤에 만드는 음악, 웹툰, 영상.</p>
+      <p class="hero-desc">
+        자정 이후의 감정을 콘텐츠로 만듭니다. 다크 일렉트로닉 J-POP 아티스트 SHINYA의 소속사이자,
+        음악·웹툰·영상 제작 스튜디오입니다.
+      </p>
+      <div class="hero-actions">
+        <a href="#artists" class="btn btn-primary">아티스트 보기</a>
+        <a href="#services" class="btn btn-ghost">제작 의뢰</a>
+      </div>
+    </div>
+    <div class="hero-scroll" aria-hidden="true"><span></span></div>
   </section>
 
-  <!-- ===== 메뉴 섹션 ===== -->
-  <section id="menu" class="section">
-    <p class="eyebrow">MENU</p>
-    <h2>메뉴</h2>
-
-    <!-- 시그니처 : 우리 가게만의 대표 메뉴 (달 컨셉) -->
-    <h3 class="menu-category">🌙 시그니처</h3>
-    <div class="menu-grid">
-      <div class="menu-card signature">
-        <span class="badge">BEST</span>
-        <span class="menu-emoji">🌕</span>
-        <h3>루나 크림 라떼</h3>
-        <p>보름달처럼 둥근 수제 크림을 올린 시그니처 라떼</p>
-        <span class="price">5,800원</span>
-      </div>
-      <div class="menu-card signature">
-        <span class="badge">NEW</span>
-        <span class="menu-emoji">🌌</span>
-        <h3>미드나잇 초코</h3>
-        <p>다크 초콜릿에 소금 캐러멜을 더한 진한 초코 음료</p>
-        <span class="price">6,000원</span>
-      </div>
+  <!-- ===== 아티스트 ===== -->
+  <section id="artists" class="section">
+    <div class="section-head">
+      <p class="eyebrow">ARTISTS</p>
+      <h2>아티스트</h2>
     </div>
+    <div id="artist-list" class="artist-list"><!-- JS가 data/artists.json으로 채움 --></div>
+  </section>
 
-    <!-- 커피 -->
-    <h3 class="menu-category">☕ 커피</h3>
-    <div class="menu-grid">
-      <div class="menu-card">
-        <span class="menu-emoji">☕</span>
-        <h3>아메리카노</h3>
-        <p>깊고 진한 스페셜티 원두</p>
-        <span class="price">4,000원</span>
-      </div>
-      <div class="menu-card">
-        <span class="menu-emoji">🥛</span>
-        <h3>카페라떼</h3>
-        <p>부드러운 우유와 에스프레소</p>
-        <span class="price">4,500원</span>
-      </div>
-      <div class="menu-card">
-        <span class="menu-emoji">🍦</span>
-        <h3>바닐라라떼</h3>
-        <p>은은한 바닐라 향의 달콤한 라떼</p>
-        <span class="price">5,000원</span>
-      </div>
-      <div class="menu-card">
-        <span class="menu-emoji">🍮</span>
-        <h3>카라멜 마키아토</h3>
-        <p>카라멜의 달콤함과 에스프레소의 조화</p>
-        <span class="price">5,300원</span>
-      </div>
+  <!-- ===== 작업물 ===== -->
+  <section id="works" class="section section-alt">
+    <div class="section-head">
+      <p class="eyebrow">WORKS</p>
+      <h2>작업</h2>
+      <p class="section-desc">음반, 웹툰, 영상 — NOCT가 만든 것들.</p>
     </div>
-
-    <!-- 논커피 : 커피를 못 마시는 손님을 위한 메뉴 -->
-    <h3 class="menu-category">🍵 논커피</h3>
-    <div class="menu-grid">
-      <div class="menu-card">
-        <span class="menu-emoji">🍵</span>
-        <h3>말차라떼</h3>
-        <p>고소하고 진한 프리미엄 말차</p>
-        <span class="price">5,500원</span>
-      </div>
-      <div class="menu-card">
-        <span class="menu-emoji">🍓</span>
-        <h3>딸기라떼</h3>
-        <p>생딸기청과 우유의 상큼한 만남</p>
-        <span class="price">5,800원</span>
-      </div>
-      <div class="menu-card">
-        <span class="menu-emoji">🍋</span>
-        <h3>자몽에이드</h3>
-        <p>수제 자몽청으로 만든 시원한 에이드</p>
-        <span class="price">5,500원</span>
-      </div>
-      <div class="menu-card">
-        <span class="menu-emoji">🫖</span>
-        <h3>캐모마일 티</h3>
-        <p>편안한 휴식을 위한 허브티</p>
-        <span class="price">4,500원</span>
-      </div>
+    <div class="filter" id="works-filter" role="tablist">
+      <button class="chip active" data-filter="all">전체</button>
+      <button class="chip" data-filter="music">음악</button>
+      <button class="chip" data-filter="webtoon">웹툰</button>
+      <button class="chip" data-filter="video">영상</button>
     </div>
+    <div id="works-grid" class="works-grid"><!-- JS가 data/works.json으로 채움 --></div>
+  </section>
 
-    <!-- 디저트 -->
-    <h3 class="menu-category">🍰 디저트</h3>
-    <div class="menu-grid">
-      <div class="menu-card">
-        <span class="menu-emoji">🧀</span>
-        <h3>바스크 치즈케이크</h3>
-        <p>겉은 진하게, 속은 촉촉하게 구운 치즈케이크</p>
-        <span class="price">6,500원</span>
-      </div>
-      <div class="menu-card">
-        <span class="menu-emoji">🥐</span>
-        <h3>소금빵</h3>
-        <p>버터 풍미 가득한 겉바속촉 소금빵</p>
-        <span class="price">3,500원</span>
-      </div>
-      <div class="menu-card">
-        <span class="menu-emoji">🍪</span>
-        <h3>르뱅쿠키</h3>
-        <p>겉은 바삭, 속은 꾸덕한 초코 쿠키</p>
-        <span class="price">4,000원</span>
-      </div>
-      <div class="menu-card">
-        <span class="menu-emoji">🥞</span>
-        <h3>크로플</h3>
-        <p>아이스크림을 올린 바삭한 크로플</p>
-        <span class="price">5,500원</span>
-      </div>
+  <!-- ===== 서비스 (제작 의뢰) ===== -->
+  <section id="services" class="section">
+    <div class="section-head">
+      <p class="eyebrow">SERVICES</p>
+      <h2>제작 의뢰</h2>
+      <p class="section-desc">브랜드, 크리에이터, 아티스트를 위한 제작 서비스. 기획부터 납품까지 한 팀이 진행합니다.</p>
+    </div>
+    <div id="service-grid" class="service-grid"><!-- JS가 data/services.json으로 채움 --></div>
+    <div class="process">
+      <div class="process-step"><span>01</span><b>문의</b><p>아래 문의 폼으로 프로젝트 개요와 일정, 예산을 알려주세요.</p></div>
+      <div class="process-step"><span>02</span><b>기획 · 견적</b><p>레퍼런스와 방향을 맞추고 범위에 맞는 견적을 드립니다.</p></div>
+      <div class="process-step"><span>03</span><b>제작</b><p>중간 시안을 공유하며 수정 라운드를 거칩니다.</p></div>
+      <div class="process-step"><span>04</span><b>납품</b><p>최종 파일과 사용 범위(라이선스)를 정리해 전달합니다.</p></div>
     </div>
   </section>
 
-  <!-- ===== 예약 · 주문 섹션 ===== -->
-  <section id="reserve" class="section section-alt">
-    <p class="eyebrow">RESERVATION</p>
-    <h2>예약 · 주문</h2>
-    <p class="demo-notice">
-      🛠️ 지금은 연습용(데모) 기능이에요. 입력한 내용은 서버가 아니라
-      <strong>지금 보고 있는 브라우저에만</strong> 저장됩니다.
-      실제 접수 기능은 개업 준비와 함께 연결할 예정이에요.
-    </p>
-
-    <div class="reserve-grid">
-      <!-- 픽업 주문 : 메뉴에서 "담기"를 누르면 아래 장바구니에 쌓임 -->
-      <div class="panel">
-        <h3>🛍️ 픽업 주문</h3>
-        <p class="panel-desc">위 메뉴에서 <strong>담기</strong> 버튼을 누르면 여기에 담겨요.</p>
-        <ul id="cart-list"></ul>
-        <p id="cart-total" class="cart-total"></p>
-        <form id="order-form">
-          <input type="text" id="order-name" placeholder="이름" required />
-          <input type="tel" id="order-phone" placeholder="연락처 (010-0000-0000)" required />
-          <label for="order-time">픽업 시간</label>
-          <input type="time" id="order-time" min="11:00" max="22:30" required />
-          <button type="submit" class="btn form-btn">주문하기</button>
-        </form>
-        <p id="order-message" class="form-message" hidden></p>
+  <!-- ===== 음원 라이선싱 ===== -->
+  <section id="licensing" class="section section-alt">
+    <div class="section-head">
+      <p class="eyebrow">LICENSING</p>
+      <h2>음원 라이선싱</h2>
+      <p class="section-desc">유튜브, 광고, 게임, 매장 BGM — NOCT 카탈로그의 곡을 프로젝트에 사용하세요.</p>
+    </div>
+    <div class="tier-grid">
+      <div class="tier"><b>크리에이터</b><p>유튜브 · SNS · 팟캐스트<br />개인 채널 사용</p><span class="tier-price">문의</span></div>
+      <div class="tier tier-featured"><b>커머셜</b><p>광고 · 매장 · 게임 · 앱<br />상업적 사용</p><span class="tier-price">문의</span></div>
+      <div class="tier"><b>미디어</b><p>방송 · 영화 · 드라마<br />OST · 삽입곡</p><span class="tier-price">문의</span></div>
+    </div>
+    <div class="catalog-tools">
+      <input type="search" id="track-search" placeholder="곡 제목, 앨범, 분위기로 검색" aria-label="곡 검색" />
+      <div class="filter" id="track-filter">
+        <button class="chip active" data-line="all">전체</button>
+        <button class="chip" data-line="Original">Original</button>
+        <button class="chip" data-line="CLUB">CLUB</button>
+        <button class="chip" data-line="AFTER">AFTER</button>
       </div>
+    </div>
+    <div class="table-wrap">
+      <table class="catalog" id="catalog">
+        <thead><tr><th>#</th><th>곡</th><th>앨범</th><th>라인</th><th>BPM · 무드</th><th></th></tr></thead>
+        <tbody><!-- JS가 data/licensing.json으로 채움 --></tbody>
+      </table>
+    </div>
+    <p class="catalog-note" id="catalog-count"></p>
+  </section>
 
-      <!-- 좌석 예약 -->
-      <div class="panel">
-        <h3>🪑 좌석 예약</h3>
-        <p class="panel-desc">원하는 날짜와 시간에 자리를 맡아드려요.</p>
-        <form id="reserve-form">
-          <input type="text" id="reserve-name" placeholder="이름" required />
-          <input type="tel" id="reserve-phone" placeholder="연락처 (010-0000-0000)" required />
-          <label for="reserve-date">날짜</label>
-          <input type="date" id="reserve-date" required />
-          <label for="reserve-time">시간</label>
-          <input type="time" id="reserve-time" min="11:00" max="22:00" required />
-          <label for="reserve-people">인원</label>
-          <select id="reserve-people" required>
-            <option value="">인원을 선택하세요</option>
-            <option>1명</option>
-            <option>2명</option>
-            <option>3명</option>
-            <option>4명</option>
-            <option>5명 이상</option>
+  <!-- ===== 스토어 ===== -->
+  <section id="store" class="section">
+    <div class="section-head">
+      <p class="eyebrow">STORE</p>
+      <h2>스토어</h2>
+      <p class="section-desc">디지털 앨범, 웹툰 단행본, 샘플팩, 굿즈. 준비되는 대로 여기서 만나요.</p>
+    </div>
+    <div id="store-grid" class="store-grid"><!-- JS가 data/store.json으로 채움 --></div>
+  </section>
+
+  <!-- ===== 클럽 · 파트너 ===== -->
+  <section id="club" class="section section-alt">
+    <div class="section-head">
+      <p class="eyebrow">CLUB &amp; PARTNERS</p>
+      <h2>클럽 · 파트너</h2>
+    </div>
+    <div class="duo">
+      <div class="duo-card" data-bg="club">
+        <p class="eyebrow">NOCT CLUB · 준비 중</p>
+        <h3>밤을 먼저 듣는 사람들</h3>
+        <p>미공개 데모, 비하인드, 선공개 음원과 웹툰 회차. 팬 멤버십을 준비하고 있어요. 오픈 소식을 가장 먼저 받고 싶다면 알림을 신청하세요.</p>
+        <button class="btn btn-ghost" data-contact="멤버십 · 협업" data-detail="NOCT CLUB 오픈 알림 신청">오픈 알림 신청</button>
+      </div>
+      <div class="duo-card" data-bg="partner">
+        <p class="eyebrow">BRAND PARTNERSHIP</p>
+        <h3>브랜드와 함께 만드는 밤</h3>
+        <p>콜라보 음원, 브랜드 필름, 캐릭터 IP 협업, 팝업·이벤트 사운드 디자인. 밤의 무드가 필요한 브랜드라면 이야기 나눠요.</p>
+        <button class="btn btn-primary" data-contact="멤버십 · 협업" data-detail="브랜드 협업 문의">협업 제안하기</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 문의 ===== -->
+  <section id="contact" class="section">
+    <div class="section-head">
+      <p class="eyebrow">CONTACT</p>
+      <h2>문의하기</h2>
+      <p class="section-desc">제작 의뢰, 라이선싱, 협업 — 무엇이든 남겨주세요. 확인 후 연락드립니다.</p>
+    </div>
+    <div class="contact-wrap">
+      <form id="contact-form" class="contact-form" novalidate>
+        <label>문의 유형
+          <select id="c-type" required>
+            <option value="">선택하세요</option>
+            <option>제작 의뢰</option>
+            <option>음원 라이선싱</option>
+            <option>스토어 · 굿즈</option>
+            <option>멤버십 · 협업</option>
+            <option>기타</option>
           </select>
-          <button type="submit" class="btn form-btn">예약하기</button>
-        </form>
-        <p id="reserve-message" class="form-message" hidden></p>
-      </div>
+        </label>
+        <div class="row">
+          <label>이름 / 회사<input type="text" id="c-name" placeholder="홍길동 · ○○브랜드" required /></label>
+          <label>연락처<input type="text" id="c-contact" placeholder="이메일 또는 전화번호" required /></label>
+        </div>
+        <div class="row">
+          <label>희망 일정<input type="text" id="c-when" placeholder="예: 10월 중 · 미정" /></label>
+          <label>예산 (선택)<input type="text" id="c-budget" placeholder="예: 100만원 내외 · 미정" /></label>
+        </div>
+        <label>내용<textarea id="c-detail" rows="5" placeholder="프로젝트 개요, 레퍼런스, 사용 범위 등을 적어주세요." required></textarea></label>
+        <button type="submit" class="btn btn-primary btn-block">보내기</button>
+        <p id="contact-msg" class="form-msg" hidden></p>
+      </form>
+      <aside class="contact-side">
+        <p class="eyebrow">NOCT ENTERTAINMENT</p>
+        <p>밤에 만드는 음악, 웹툰, 영상.<br />서울 · 도쿄</p>
+        <p class="muted">접수된 문의는 영업일 기준 2~3일 안에 답변드려요.</p>
+        <div class="side-links" id="side-links"><!-- JS가 아티스트 링크로 채움 --></div>
+      </aside>
     </div>
   </section>
 
-  <!-- ===== 소개 섹션 ===== -->
-  <section id="about" class="section">
-    <p class="eyebrow">ABOUT</p>
-    <h2>카페 소개</h2>
-    <p class="about-text">
-      Runa_Cafe는 조용히 쉬어가고 싶은 분들을 위한 공간입니다.<br />
-      달빛처럼 은은한 조명 아래에서, 정성껏 내린 커피 한 잔과 함께<br />
-      여유로운 시간을 보내세요.
-    </p>
-
-    <!-- 카페 사진 갤러리 (AI로 생성한 컨셉 사진)
-         개업 후 실제 사진이 생기면:
-         1) 저장소에 images/ 폴더를 만들어 사진을 넣고
-         2) 아래 src를 "images/파일명.jpg" 로 바꾸면 됩니다 -->
-    <div class="gallery">
-      <figure>
-        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260728_012529_d7ae340c-31c1-4f14-b216-1d50cf08ccbd.png" alt="달빛 컨셉의 아늑한 카페 실내" />
-        <figcaption>달빛 아래 아늑한 실내</figcaption>
-      </figure>
-      <figure>
-        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260728_012532_fe9f3308-ba03-43c8-be8a-037ab4977594.png" alt="보름달 크림을 올린 루나 크림 라떼" />
-        <figcaption>시그니처 루나 크림 라떼</figcaption>
-      </figure>
-      <figure>
-        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260728_012535_f943ac57-06a2-4c48-91e1-7e03590aee98.png" alt="바스크 치즈케이크와 소금빵, 르뱅쿠키" />
-        <figcaption>매일 준비하는 디저트</figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <!-- ===== 오시는 길 섹션 ===== -->
-  <section id="location" class="section">
-    <p class="eyebrow">LOCATION</p>
-    <h2>오시는 길</h2>
-    <!-- ⚠️ 아래는 샘플 정보입니다. 실제 가게를 차리면 진짜 정보로 바꿔주세요! -->
-    <div class="info-box">
-      <p>📍 주소 : 서울특별시 마포구 달빛로 24, 1층 (샘플 주소)</p>
-      <p>🕐 영업시간 : 매일 11:00 ~ 23:00 (매주 월요일 휴무)</p>
-      <p>📞 전화 : 02-1234-5678 (샘플 번호)</p>
-      <p>📷 인스타그램 : @runa_cafe (준비 중)</p>
-    </div>
-
-    <!-- 구글 지도 : src의 q= 뒤 주소를 바꾸면 지도가 그 위치로 바뀝니다 (샘플: 마포구청 근처) -->
-    <div class="map-wrap">
-      <iframe
-        src="https://www.google.com/maps?q=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C%20%EB%A7%88%ED%8F%AC%EA%B5%AC&output=embed"
-        title="Runa_Cafe 위치 지도 (샘플)"
-        loading="lazy"
-        allowfullscreen>
-      </iframe>
-    </div>
-  </section>
-
-  <!-- ===== 하단 (푸터) ===== -->
   <footer class="footer">
-    <p class="footer-logo">🌙 Runa_Cafe</p>
-    <p>매일 11:00 ~ 23:00 · 월요일 휴무</p>
-    <p>서울특별시 마포구 달빛로 24, 1층 (샘플)</p>
-    <p class="footer-copy">© 2026 Runa_Cafe. All rights reserved.</p>
+    <div class="footer-inner">
+      <div>
+        <span class="wm-main">NOCT</span>
+        <p class="muted">© 2026 NOCT ENTERTAINMENT. All rights reserved.</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#artists">아티스트</a></li>
+        <li><a href="#works">작업</a></li>
+        <li><a href="#services">서비스</a></li>
+        <li><a href="#licensing">라이선싱</a></li>
+        <li><a href="#contact">문의</a></li>
+      </ul>
+    </div>
   </footer>
 
-  <!-- 맨 위로 이동 버튼 (스크롤을 내리면 JS가 보여줌) -->
-  <button id="top-btn" aria-label="맨 위로 이동">↑</button>
+  <!-- 커서를 따라다니는 푸른 글로우 + 화면 전체 필름 그레인 -->
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
 
-  <!-- 동작(인터랙션) 담당인 JavaScript 파일을 연결 -->
-  <script src="js/script.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
