@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <!--
   NOCT ENTERTAINMENT — 공식 홈페이지
-  index.html : 페이지 뼈대. 실제 콘텐츠(아티스트·작업물·서비스·곡 목록·상품)는
-  data/*.json 에 들어 있고, js/main.js 가 읽어와서 화면에 그립니다.
+  index.html : 페이지 뼈대. 상단 탭을 누르면 해당 화면(view)만 보이는 구조예요.
+  콘텐츠(아티스트·작업물·서비스·곡 목록·상품)는 data/*.json 에 있고 js/main.js 가 그립니다.
   → 내용을 추가/수정할 땐 HTML이 아니라 data/ 폴더의 JSON만 고치면 돼요.
 -->
 <html lang="ko">
@@ -13,7 +13,7 @@
   <meta name="description" content="NOCT ENTERTAINMENT. 다크 일렉트로닉 J-POP 아티스트 SHINYA를 비롯한 음악·웹툰·영상 콘텐츠를 제작하고, 음원 라이선싱과 제작 의뢰를 받습니다." />
   <meta property="og:title" content="NOCT ENTERTAINMENT" />
   <meta property="og:description" content="밤에 만드는 음악, 웹툰, 영상. 제작 의뢰 · 음원 라이선싱 · 스토어" />
-  <meta property="og:image" content="https://shinya-music.com/images/home/rooftop.jpg" />
+  <meta property="og:image" content="https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260907_021201_f26a3e59-9dca-41c4-af6d-839a14ceb9b7.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -22,11 +22,10 @@
 </head>
 <body>
 
-  <!-- ===== 상단 내비게이션 ===== -->
+  <!-- ===== 상단 내비게이션 (탭) ===== -->
   <header class="nav">
     <div class="nav-inner">
-      <a href="#top" class="wordmark" aria-label="NOCT 홈">
-        <!-- NOCT 심볼 : 초승달 + 음파 (SVG로 직접 그림) -->
+      <a href="#home" class="wordmark" aria-label="NOCT 홈">
         <svg class="wm-symbol" viewBox="0 0 32 32" aria-hidden="true">
           <path d="M18 2.5a13.5 13.5 0 1 0 0 27 11 11 0 1 1 0-27z" fill="currentColor"/>
           <rect x="19" y="12" width="2.2" height="8" rx="1.1" fill="currentColor"/>
@@ -41,7 +40,7 @@
       <span class="nav-clock" aria-label="도쿄 현재 시각">TOKYO <b id="nav-clock">--:--</b></span>
       <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false">☰</button>
       <nav>
-        <ul class="nav-links">
+        <ul class="nav-links" role="tablist">
           <li><a href="#artists">아티스트</a></li>
           <li><a href="#works">작업</a></li>
           <li><a href="#services">서비스</a></li>
@@ -54,175 +53,234 @@
     </div>
   </header>
 
-  <!-- ===== 히어로 ===== -->
-  <section id="top" class="hero">
-    <div class="hero-bg" aria-hidden="true"></div>
-    <div class="hero-glow" aria-hidden="true"></div>
-    <div class="hero-grid" aria-hidden="true"></div>
-    <canvas id="stars" class="hero-stars" aria-hidden="true"></canvas>
-    <!-- HUD : 계기판처럼 배치한 마이크로 정보 -->
-    <div class="hud hud-tl" aria-hidden="true">SYS.NOCT / v2.0<br />STATUS · ONLINE</div>
-    <div class="hud hud-tr" aria-hidden="true">35.68°N 139.69°E<br />TOKYO <span id="hero-clock">--:--:--</span> JST</div>
-    <div class="hud hud-bl" aria-hidden="true">MUSIC · WEBTOON · VIDEO</div>
-    <div class="hud hud-br" aria-hidden="true">SCROLL ↓</div>
-    <div class="hero-inner">
-      <p class="eyebrow hero-eyebrow">NOCTURNE-BORN CREATIVE LABEL · SEOUL ↔ TOKYO</p>
-      <h1 class="hero-title">NOCT</h1>
-      <p class="hero-tagline">밤에 만드는 음악, 웹툰, 영상.</p>
-      <p class="hero-desc">
-        자정 이후의 감정을 콘텐츠로 만듭니다. 다크 일렉트로닉 J-POP 아티스트 SHINYA의 소속사이자,
-        음악·웹툰·영상 제작 스튜디오입니다.
-      </p>
-      <div class="hero-actions">
-        <a href="#artists" class="btn btn-primary">아티스트 보기</a>
-        <a href="#services" class="btn btn-ghost">제작 의뢰</a>
-      </div>
-    </div>
-    <div class="hero-scroll" aria-hidden="true"><span></span></div>
-  </section>
+  <main id="views">
 
-  <!-- ===== 아티스트 ===== -->
-  <section id="artists" class="section">
-    <div class="section-head">
-      <p class="eyebrow">ARTISTS</p>
-      <h2>아티스트</h2>
-    </div>
-    <div id="artist-list" class="artist-list"><!-- JS가 data/artists.json으로 채움 --></div>
-  </section>
-
-  <!-- ===== 작업물 ===== -->
-  <section id="works" class="section section-alt">
-    <div class="section-head">
-      <p class="eyebrow">WORKS</p>
-      <h2>작업</h2>
-      <p class="section-desc">음반, 웹툰, 영상 — NOCT가 만든 것들.</p>
-    </div>
-    <div class="filter" id="works-filter" role="tablist">
-      <button class="chip active" data-filter="all">전체</button>
-      <button class="chip" data-filter="music">음악</button>
-      <button class="chip" data-filter="webtoon">웹툰</button>
-      <button class="chip" data-filter="video">영상</button>
-    </div>
-    <div id="works-grid" class="works-grid"><!-- JS가 data/works.json으로 채움 --></div>
-  </section>
-
-  <!-- ===== 서비스 (제작 의뢰) ===== -->
-  <section id="services" class="section">
-    <div class="section-head">
-      <p class="eyebrow">SERVICES</p>
-      <h2>제작 의뢰</h2>
-      <p class="section-desc">브랜드, 크리에이터, 아티스트를 위한 제작 서비스. 기획부터 납품까지 한 팀이 진행합니다.</p>
-    </div>
-    <div id="service-grid" class="service-grid"><!-- JS가 data/services.json으로 채움 --></div>
-    <div class="process">
-      <div class="process-step"><span>01</span><b>문의</b><p>아래 문의 폼으로 프로젝트 개요와 일정, 예산을 알려주세요.</p></div>
-      <div class="process-step"><span>02</span><b>기획 · 견적</b><p>레퍼런스와 방향을 맞추고 범위에 맞는 견적을 드립니다.</p></div>
-      <div class="process-step"><span>03</span><b>제작</b><p>중간 시안을 공유하며 수정 라운드를 거칩니다.</p></div>
-      <div class="process-step"><span>04</span><b>납품</b><p>최종 파일과 사용 범위(라이선스)를 정리해 전달합니다.</p></div>
-    </div>
-  </section>
-
-  <!-- ===== 음원 라이선싱 ===== -->
-  <section id="licensing" class="section section-alt">
-    <div class="section-head">
-      <p class="eyebrow">LICENSING</p>
-      <h2>음원 라이선싱</h2>
-      <p class="section-desc">유튜브, 광고, 게임, 매장 BGM — NOCT 카탈로그의 곡을 프로젝트에 사용하세요.</p>
-    </div>
-    <div class="tier-grid">
-      <div class="tier"><b>크리에이터</b><p>유튜브 · SNS · 팟캐스트<br />개인 채널 사용</p><span class="tier-price">문의</span></div>
-      <div class="tier tier-featured"><b>커머셜</b><p>광고 · 매장 · 게임 · 앱<br />상업적 사용</p><span class="tier-price">문의</span></div>
-      <div class="tier"><b>미디어</b><p>방송 · 영화 · 드라마<br />OST · 삽입곡</p><span class="tier-price">문의</span></div>
-    </div>
-    <div class="catalog-tools">
-      <input type="search" id="track-search" placeholder="곡 제목, 앨범, 분위기로 검색" aria-label="곡 검색" />
-      <div class="filter" id="track-filter">
-        <button class="chip active" data-line="all">전체</button>
-        <button class="chip" data-line="Original">Original</button>
-        <button class="chip" data-line="CLUB">CLUB</button>
-        <button class="chip" data-line="AFTER">AFTER</button>
-      </div>
-    </div>
-    <div class="table-wrap">
-      <table class="catalog" id="catalog">
-        <thead><tr><th>#</th><th>곡</th><th>앨범</th><th>라인</th><th>BPM · 무드</th><th></th></tr></thead>
-        <tbody><!-- JS가 data/licensing.json으로 채움 --></tbody>
-      </table>
-    </div>
-    <p class="catalog-note" id="catalog-count"></p>
-  </section>
-
-  <!-- ===== 스토어 ===== -->
-  <section id="store" class="section">
-    <div class="section-head">
-      <p class="eyebrow">STORE</p>
-      <h2>스토어</h2>
-      <p class="section-desc">디지털 앨범, 웹툰 단행본, 샘플팩, 굿즈. 준비되는 대로 여기서 만나요.</p>
-    </div>
-    <div id="store-grid" class="store-grid"><!-- JS가 data/store.json으로 채움 --></div>
-  </section>
-
-  <!-- ===== 클럽 · 파트너 ===== -->
-  <section id="club" class="section section-alt">
-    <div class="section-head">
-      <p class="eyebrow">CLUB &amp; PARTNERS</p>
-      <h2>클럽 · 파트너</h2>
-    </div>
-    <div class="duo">
-      <div class="duo-card" data-bg="club">
-        <p class="eyebrow">NOCT CLUB · 준비 중</p>
-        <h3>밤을 먼저 듣는 사람들</h3>
-        <p>미공개 데모, 비하인드, 선공개 음원과 웹툰 회차. 팬 멤버십을 준비하고 있어요. 오픈 소식을 가장 먼저 받고 싶다면 알림을 신청하세요.</p>
-        <button class="btn btn-ghost" data-contact="멤버십 · 협업" data-detail="NOCT CLUB 오픈 알림 신청">오픈 알림 신청</button>
-      </div>
-      <div class="duo-card" data-bg="partner">
-        <p class="eyebrow">BRAND PARTNERSHIP</p>
-        <h3>브랜드와 함께 만드는 밤</h3>
-        <p>콜라보 음원, 브랜드 필름, 캐릭터 IP 협업, 팝업·이벤트 사운드 디자인. 밤의 무드가 필요한 브랜드라면 이야기 나눠요.</p>
-        <button class="btn btn-primary" data-contact="멤버십 · 협업" data-detail="브랜드 협업 문의">협업 제안하기</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== 문의 ===== -->
-  <section id="contact" class="section">
-    <div class="section-head">
-      <p class="eyebrow">CONTACT</p>
-      <h2>문의하기</h2>
-      <p class="section-desc">제작 의뢰, 라이선싱, 협업 — 무엇이든 남겨주세요. 확인 후 연락드립니다.</p>
-    </div>
-    <div class="contact-wrap">
-      <form id="contact-form" class="contact-form" novalidate>
-        <label>문의 유형
-          <select id="c-type" required>
-            <option value="">선택하세요</option>
-            <option>제작 의뢰</option>
-            <option>음원 라이선싱</option>
-            <option>스토어 · 굿즈</option>
-            <option>멤버십 · 협업</option>
-            <option>기타</option>
-          </select>
-        </label>
-        <div class="row">
-          <label>이름 / 회사<input type="text" id="c-name" placeholder="홍길동 · ○○브랜드" required /></label>
-          <label>연락처<input type="text" id="c-contact" placeholder="이메일 또는 전화번호" required /></label>
+    <!-- =================== HOME =================== -->
+    <section id="home" class="view">
+      <div class="hero">
+        <div class="hero-bg" aria-hidden="true"></div>
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="hero-grid" aria-hidden="true"></div>
+        <canvas id="stars" class="hero-stars" aria-hidden="true"></canvas>
+        <div class="hud hud-tl" aria-hidden="true">SYS.NOCT / v2.1<br />STATUS · ONLINE</div>
+        <div class="hud hud-tr" aria-hidden="true">35.68°N 139.69°E<br />TOKYO <span id="hero-clock">--:--:--</span> JST</div>
+        <div class="hud hud-bl" aria-hidden="true">MUSIC · WEBTOON · VIDEO</div>
+        <div class="hud hud-br" aria-hidden="true">SCROLL ↓</div>
+        <div class="hero-inner">
+          <p class="eyebrow hero-eyebrow">NOCTURNE-BORN CREATIVE LABEL · SEOUL ↔ TOKYO</p>
+          <h1 class="hero-title">NOCT</h1>
+          <p class="hero-tagline">밤에 만드는 음악, 웹툰, 영상.</p>
+          <p class="hero-desc">
+            자정 이후의 감정을 콘텐츠로 만듭니다. 다크 일렉트로닉 J-POP 아티스트 SHINYA의 소속사이자,
+            음악·웹툰·영상 제작 스튜디오입니다.
+          </p>
+          <div class="hero-actions">
+            <a href="#artists" class="btn btn-primary">아티스트 보기</a>
+            <a href="#services" class="btn btn-ghost">제작 의뢰</a>
+          </div>
         </div>
-        <div class="row">
-          <label>희망 일정<input type="text" id="c-when" placeholder="예: 10월 중 · 미정" /></label>
-          <label>예산 (선택)<input type="text" id="c-budget" placeholder="예: 100만원 내외 · 미정" /></label>
+        <div class="hero-scroll" aria-hidden="true"><span></span></div>
+      </div>
+
+      <!-- 지금 NOCT : 다음 발매 · 웹툰 최신화 · 최신 영상 -->
+      <div class="section home-now">
+        <div class="section-head row-head">
+          <div><p class="eyebrow">NOW</p><h2>지금 NOCT</h2></div>
+          <a href="#works" class="btn btn-sm">작업 전체 보기 →</a>
         </div>
-        <label>내용<textarea id="c-detail" rows="5" placeholder="프로젝트 개요, 레퍼런스, 사용 범위 등을 적어주세요." required></textarea></label>
-        <button type="submit" class="btn btn-primary btn-block">보내기</button>
-        <p id="contact-msg" class="form-msg" hidden></p>
-      </form>
-      <aside class="contact-side">
-        <p class="eyebrow">NOCT ENTERTAINMENT</p>
-        <p>밤에 만드는 음악, 웹툰, 영상.<br />서울 · 도쿄</p>
-        <p class="muted">접수된 문의는 영업일 기준 2~3일 안에 답변드려요.</p>
-        <div class="side-links" id="side-links"><!-- JS가 아티스트 링크로 채움 --></div>
-      </aside>
-    </div>
-  </section>
+        <div id="now-grid" class="now-grid"><!-- JS가 채움 --></div>
+      </div>
+
+      <!-- 아티스트 한 줄 -->
+      <div class="section-alt">
+        <div class="section home-artist">
+          <div id="home-artist" class="home-artist-card"><!-- JS가 채움 --></div>
+        </div>
+      </div>
+
+      <!-- 서비스 미니 타일 -->
+      <div class="section home-services">
+        <div class="section-head row-head">
+          <div><p class="eyebrow">SERVICES</p><h2>제작 의뢰</h2></div>
+          <a href="#services" class="btn btn-sm">자세히 보기 →</a>
+        </div>
+        <div id="home-service-grid" class="tile-grid"><!-- JS가 채움 --></div>
+      </div>
+
+      <!-- 문의 배너 -->
+      <div class="section">
+        <div class="cta-band bracket">
+          <div>
+            <p class="eyebrow">CONTACT</p>
+            <h2>밤의 무드가 필요하다면</h2>
+            <p class="muted">제작 의뢰, 음원 라이선싱, 브랜드 협업 — 무엇이든 남겨주세요.</p>
+          </div>
+          <div class="cta-actions">
+            <a href="#licensing" class="btn btn-ghost">음원 라이선싱</a>
+            <a href="#contact" class="btn btn-primary">문의하기</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================== ARTISTS =================== -->
+    <section id="artists" class="view" hidden>
+      <div class="section">
+        <div class="section-head">
+          <p class="eyebrow">ARTISTS</p>
+          <h2>아티스트</h2>
+        </div>
+        <div id="artist-list" class="artist-list"></div>
+      </div>
+    </section>
+
+    <!-- =================== WORKS =================== -->
+    <section id="works" class="view" hidden>
+      <div class="section">
+        <div class="section-head">
+          <p class="eyebrow">WORKS</p>
+          <h2>작업</h2>
+          <p class="section-desc">음반, 웹툰, 영상 — NOCT가 만든 것들.</p>
+        </div>
+        <div class="filter" id="works-filter">
+          <button class="chip active" data-filter="all">전체</button>
+          <button class="chip" data-filter="music">음악</button>
+          <button class="chip" data-filter="webtoon">웹툰</button>
+          <button class="chip" data-filter="video">영상</button>
+        </div>
+        <div id="works-grid" class="works-grid"></div>
+      </div>
+    </section>
+
+    <!-- =================== SERVICES =================== -->
+    <section id="services" class="view" hidden>
+      <div class="section">
+        <div class="section-head">
+          <p class="eyebrow">SERVICES</p>
+          <h2>제작 의뢰</h2>
+          <p class="section-desc">브랜드, 크리에이터, 아티스트를 위한 제작 서비스. 기획부터 납품까지 한 팀이 진행합니다.</p>
+        </div>
+        <div id="service-grid" class="service-grid"></div>
+        <div class="process">
+          <div class="process-step"><span>01</span><b>문의</b><p>문의 폼으로 프로젝트 개요와 일정, 예산을 알려주세요.</p></div>
+          <div class="process-step"><span>02</span><b>기획 · 견적</b><p>레퍼런스와 방향을 맞추고 범위에 맞는 견적을 드립니다.</p></div>
+          <div class="process-step"><span>03</span><b>제작</b><p>중간 시안을 공유하며 수정 라운드를 거칩니다.</p></div>
+          <div class="process-step"><span>04</span><b>납품</b><p>최종 파일과 사용 범위(라이선스)를 정리해 전달합니다.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================== LICENSING =================== -->
+    <section id="licensing" class="view" hidden>
+      <div class="section">
+        <div class="section-head">
+          <p class="eyebrow">LICENSING</p>
+          <h2>음원 라이선싱</h2>
+          <p class="section-desc">유튜브, 광고, 게임, 매장 BGM — NOCT 카탈로그의 곡을 프로젝트에 사용하세요.</p>
+        </div>
+        <div class="tier-grid">
+          <div class="tier"><b>크리에이터</b><p>유튜브 · SNS · 팟캐스트<br />개인 채널 사용</p><span class="tier-price">문의</span></div>
+          <div class="tier tier-featured"><b>커머셜</b><p>광고 · 매장 · 게임 · 앱<br />상업적 사용</p><span class="tier-price">문의</span></div>
+          <div class="tier"><b>미디어</b><p>방송 · 영화 · 드라마<br />OST · 삽입곡</p><span class="tier-price">문의</span></div>
+        </div>
+        <div class="catalog-tools">
+          <input type="search" id="track-search" placeholder="곡 제목, 앨범, 분위기로 검색" aria-label="곡 검색" />
+          <div class="filter" id="track-filter">
+            <button class="chip active" data-line="all">전체</button>
+            <button class="chip" data-line="Original">Original</button>
+            <button class="chip" data-line="CLUB">CLUB</button>
+            <button class="chip" data-line="AFTER">AFTER</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="catalog" id="catalog">
+            <thead><tr><th>#</th><th>곡</th><th>앨범</th><th>라인</th><th>BPM · 무드</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="catalog-note" id="catalog-count"></p>
+      </div>
+    </section>
+
+    <!-- =================== STORE =================== -->
+    <section id="store" class="view" hidden>
+      <div class="section">
+        <div class="section-head">
+          <p class="eyebrow">STORE</p>
+          <h2>스토어</h2>
+          <p class="section-desc">디지털 앨범, 웹툰 단행본, 샘플팩, 굿즈. 준비되는 대로 여기서 만나요.</p>
+        </div>
+        <div id="store-grid" class="store-grid"></div>
+      </div>
+    </section>
+
+    <!-- =================== CLUB & PARTNERS =================== -->
+    <section id="club" class="view" hidden>
+      <div class="section">
+        <div class="section-head">
+          <p class="eyebrow">CLUB &amp; PARTNERS</p>
+          <h2>클럽 · 파트너</h2>
+        </div>
+        <div class="duo">
+          <div class="duo-card" data-bg="club">
+            <p class="eyebrow">NOCT CLUB · 준비 중</p>
+            <h3>밤을 먼저 듣는 사람들</h3>
+            <p>미공개 데모, 비하인드, 선공개 음원과 웹툰 회차. 팬 멤버십을 준비하고 있어요. 오픈 소식을 가장 먼저 받고 싶다면 알림을 신청하세요.</p>
+            <button class="btn btn-ghost" data-contact="멤버십 · 협업" data-detail="NOCT CLUB 오픈 알림 신청">오픈 알림 신청</button>
+          </div>
+          <div class="duo-card" data-bg="partner">
+            <p class="eyebrow">BRAND PARTNERSHIP</p>
+            <h3>브랜드와 함께 만드는 밤</h3>
+            <p>콜라보 음원, 브랜드 필름, 캐릭터 IP 협업, 팝업·이벤트 사운드 디자인. 밤의 무드가 필요한 브랜드라면 이야기 나눠요.</p>
+            <button class="btn btn-primary" data-contact="멤버십 · 협업" data-detail="브랜드 협업 문의">협업 제안하기</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================== CONTACT =================== -->
+    <section id="contact" class="view" hidden>
+      <div class="section">
+        <div class="section-head">
+          <p class="eyebrow">CONTACT</p>
+          <h2>문의하기</h2>
+          <p class="section-desc">제작 의뢰, 라이선싱, 협업 — 무엇이든 남겨주세요. 확인 후 연락드립니다.</p>
+        </div>
+        <div class="contact-wrap">
+          <form id="contact-form" class="contact-form" novalidate>
+            <label>문의 유형
+              <select id="c-type" required>
+                <option value="">선택하세요</option>
+                <option>제작 의뢰</option>
+                <option>음원 라이선싱</option>
+                <option>스토어 · 굿즈</option>
+                <option>멤버십 · 협업</option>
+                <option>기타</option>
+              </select>
+            </label>
+            <div class="row">
+              <label>이름 / 회사<input type="text" id="c-name" placeholder="홍길동 · ○○브랜드" required /></label>
+              <label>연락처<input type="text" id="c-contact" placeholder="이메일 또는 전화번호" required /></label>
+            </div>
+            <div class="row">
+              <label>희망 일정<input type="text" id="c-when" placeholder="예: 10월 중 · 미정" /></label>
+              <label>예산 (선택)<input type="text" id="c-budget" placeholder="예: 100만원 내외 · 미정" /></label>
+            </div>
+            <label>내용<textarea id="c-detail" rows="5" placeholder="프로젝트 개요, 레퍼런스, 사용 범위 등을 적어주세요." required></textarea></label>
+            <button type="submit" class="btn btn-primary btn-block">보내기</button>
+            <p id="contact-msg" class="form-msg" hidden></p>
+          </form>
+          <aside class="contact-side">
+            <p class="eyebrow">NOCT ENTERTAINMENT</p>
+            <p>밤에 만드는 음악, 웹툰, 영상.<br />서울 · 도쿄</p>
+            <p class="muted">접수된 문의는 영업일 기준 2~3일 안에 답변드려요.</p>
+            <div class="side-links" id="side-links"></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+  </main>
 
   <footer class="footer">
     <div class="footer-inner">
@@ -235,12 +293,12 @@
         <li><a href="#works">작업</a></li>
         <li><a href="#services">서비스</a></li>
         <li><a href="#licensing">라이선싱</a></li>
+        <li><a href="#store">스토어</a></li>
         <li><a href="#contact">문의</a></li>
       </ul>
     </div>
   </footer>
 
-  <!-- 커서를 따라다니는 푸른 글로우 + 화면 전체 필름 그레인 -->
   <div class="cursor-glow" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
 

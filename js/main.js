@@ -59,9 +59,9 @@ const LINK_LABEL = { site: "공식 사이트", youtube: "YouTube", spotify: "Spo
 
 // ===== 작업물 =====
 const KIND_LABEL = { music: "MUSIC", webtoon: "WEBTOON", video: "VIDEO" };
-function renderWorks(list) {
-  const grid = $("#works-grid");
-  grid.innerHTML = list.map((w) => `
+// 작업물 카드 한 장의 HTML (작업 탭과 홈 "지금 NOCT"에서 공용)
+function workCard(w) {
+  return `
     <a class="work reveal ${w.type === "webtoon" ? "wide" : ""}" data-type="${esc(w.type)}" href="${esc(w.link || "#")}" ${w.link ? 'target="_blank" rel="noopener"' : ""}>
       ${w.badge ? `<span class="work-badge">${esc(w.badge)}</span>` : ""}
       <img src="${esc(w.cover)}" alt="${esc(w.title)}" loading="lazy" />
@@ -70,7 +70,11 @@ function renderWorks(list) {
         <div class="work-title">${esc(w.title)}</div>
         <div class="work-sub">${esc(w.subtitle || "")}${w.date ? " · " + esc(w.date) : ""}</div>
       </div>
-    </a>`).join("");
+    </a>`;
+}
+function renderWorks(list) {
+  const grid = $("#works-grid");
+  grid.innerHTML = list.map(workCard).join("");
 
   $$("#works-filter .chip").forEach((chip) => {
     chip.addEventListener("click", () => {
@@ -135,16 +139,55 @@ function renderStore(list) {
     </article>`).join("");
 }
 
+// ===== 홈 화면 : 중요한 것만 =====
+function renderHome(works, artists, services) {
+  // 지금 NOCT : 배지(NEXT/NEW/UP)가 붙은 작업물 3개
+  const now = works.filter((w) => w.badge).slice(0, 3);
+  $("#now-grid").innerHTML = now.map(workCard).join("");
+
+  // 아티스트 한 줄
+  const a = artists[0];
+  if (a) {
+    $("#home-artist").innerHTML = `
+      <img src="${esc(a.image)}" alt="${esc(a.name)}" loading="lazy" />
+      <div>
+        <p class="eyebrow">${esc(a.role)}</p>
+        <h3 class="artist-name">${esc(a.name)}<small>${esc(a.nameJa || "")}</small></h3>
+        <p class="artist-desc">${esc(a.tagline)}</p>
+      </div>
+      <a href="#artists" class="btn btn-ghost">아티스트 보기</a>`;
+  }
+
+  // 서비스 미니 타일
+  $("#home-service-grid").innerHTML = services.map((s) => `
+    <a class="tile reveal" href="#services">
+      ${s.image ? `<img src="${esc(s.image)}" alt="" loading="lazy" />` : ""}
+      <div><b>${esc(s.title)}</b><small>${esc((s.deliverables || [])[0] || "")}</small></div>
+    </a>`).join("");
+}
+
+// ===== 탭(뷰) 전환 =====
+// 주소의 #이름(예: #works)에 맞는 화면만 보여줍니다. 뒤로가기·공유·북마크가 그대로 동작해요.
+const VIEWS = $$(".view");
+function showView(id, opts = {}) {
+  const target = VIEWS.some((v) => v.id === id) ? id : "home";
+  VIEWS.forEach((v) => { v.hidden = v.id !== target; });
+  $$(".nav-links a").forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + target));
+  if (opts.scroll !== false) window.scrollTo({ top: 0, behavior: "instant" });
+  observeReveal();
+}
+window.addEventListener("hashchange", () => showView(location.hash.slice(1) || "home"));
+
 // ===== 문의 폼 =====
-// data-contact / data-detail 버튼을 누르면 폼으로 스크롤하면서 유형·내용을 미리 채움
+// data-contact / data-detail 버튼을 누르면 문의 탭으로 이동하면서 유형·내용을 미리 채움
 function bindContactShortcuts() {
   document.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-contact]");
     if (!btn) return;
     $("#c-type").value = btn.dataset.contact;
     if (btn.dataset.detail) $("#c-detail").value = btn.dataset.detail;
-    $("#contact").scrollIntoView({ behavior: "smooth" });
-    setTimeout(() => $("#c-detail").focus(), 500);
+    if (location.hash !== "#contact") location.hash = "#contact"; else showView("contact");
+    setTimeout(() => $("#c-detail").focus(), 400);
   });
 }
 
@@ -186,15 +229,6 @@ navToggle.addEventListener("click", () => {
 });
 $$(".nav-links a").forEach((a) => a.addEventListener("click", () => { navLinks.classList.remove("open"); navToggle.textContent = "☰"; }));
 
-// 스크롤스파이
-const spy = new IntersectionObserver((entries) => {
-  entries.forEach((en) => {
-    if (!en.isIntersecting) return;
-    $$(".nav-links a").forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + en.target.id));
-  });
-}, { rootMargin: "-40% 0px -55% 0px" });
-$$("section[id]").forEach((s) => spy.observe(s));
-
 // 등장 애니메이션 (동적으로 그려진 요소까지 포함하려고 렌더 후 호출)
 function observeReveal() {
   const io = new IntersectionObserver((entries) => {
@@ -220,9 +254,9 @@ function tickClock() {
 tickClock();
 setInterval(tickClock, 1000);
 
-// (1) 섹션 번호 01 / 07
+// (1) 탭 번호 01 / 07 (홈 제외)
 function numberSections() {
-  const secs = $$("section[id]").filter((s) => s.id !== "top");
+  const secs = VIEWS.filter((s) => s.id !== "home");
   secs.forEach((s, i) => {
     const head = $(".section-head", s);
     if (!head) return;
@@ -278,12 +312,12 @@ if (FINE_POINTER && !REDUCED) {
 
 // (4) 카드 틸트 + 유리 하이라이트 — 렌더된 카드에 적용
 function applyTilt() {
-  const cards = $$(".work, .service, .product, .tier, .duo-card, .artist-card");
+  const cards = $$(".work, .service, .product, .tier, .duo-card, .artist-card, .home-artist-card, .tile");
   cards.forEach((card) => {
     card.classList.add("tilt");
-    if (card.matches(".artist-card, .duo-card")) card.classList.add("bracket");
+    if (card.matches(".artist-card, .duo-card, .home-artist-card")) card.classList.add("bracket");
     if (!FINE_POINTER || REDUCED) return;
-    const strength = card.matches(".artist-card, .duo-card") ? 2 : 6; // 큰 카드는 살짝만
+    const strength = card.matches(".artist-card, .duo-card, .home-artist-card") ? 2 : 6; // 큰 카드는 살짝만
     card.addEventListener("pointermove", (e) => {
       const r = card.getBoundingClientRect();
       const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
@@ -321,10 +355,11 @@ function applyAssets(assets) {
     TRACKS = licensing;
     renderCatalog();
     renderStore(store);
+    renderHome(works, artists, services);
     applyAssets(assets);
     applyTilt();
     bindContactShortcuts();
-    observeReveal();
+    showView(location.hash.slice(1) || "home", { scroll: false }); // 주소에 맞는 탭 열기
 
     $("#track-search").addEventListener("input", renderCatalog);
     $$("#track-filter .chip").forEach((chip) => chip.addEventListener("click", () => {
