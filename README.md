@@ -70,6 +70,7 @@
 - 색: 미드나잇 네이비 `#0a0b10` · 일렉트릭 블루 `#6f8cff` · 소프트 블루 `#a9b8ff` · 웜 화이트 `#ecebe6`
 - 입체 렌더: `data/assets.json` 의 `logo3d`(심벌 1:1, 프로필용) · `logoLockup`(심벌 + NOCT + ENTERTAINMENT 16:9, 링크 미리보기 og:image) · `logoNoct`(NOCT + ENTERTAINMENT, C 자리에 달 마크, 16:9)
 - NOCT 단독 워드마크(C = 달 마크) 벡터: `assets/logo-noct.svg` · PNG `assets/logo-noct.png`
+- 유튜브 채널 프로필(정사각, 검은 가면 인물): `data/assets.json` 의 `youtubeAvatar`
 
 ## 로컬에서 보기
 
