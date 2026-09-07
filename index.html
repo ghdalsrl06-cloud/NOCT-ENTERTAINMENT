@@ -62,6 +62,8 @@
         <div class="hero-glow" aria-hidden="true"></div>
         <div class="hero-grid" aria-hidden="true"></div>
         <canvas id="stars" class="hero-stars" aria-hidden="true"></canvas>
+        <!-- 3D 브랜드 오브젝트 (Three.js, js/three-scenes.js) -->
+        <canvas id="hero3d" class="hero-3d" aria-hidden="true"></canvas>
         <div class="hud hud-tl" aria-hidden="true">SYS.NOCT / v2.1<br />STATUS · ONLINE</div>
         <div class="hud hud-tr" aria-hidden="true">35.68°N 139.69°E<br />TOKYO <span id="hero-clock">--:--:--</span> JST</div>
         <div class="hud hud-bl" aria-hidden="true">MUSIC · WEBTOON · VIDEO</div>
@@ -113,9 +115,11 @@
 
       <!-- 문의 배너 -->
       <div class="section">
-        <div class="cta-band bracket">
+        <div class="cta-band bracket has-globe">
+          <!-- 서울↔도쿄 지구본 (Three.js) -->
+          <canvas id="globe3d" class="globe-3d" aria-hidden="true"></canvas>
           <div>
-            <p class="eyebrow">CONTACT</p>
+            <p class="eyebrow">CONTACT · SEOUL ↔ TOKYO</p>
             <h2>밤의 무드가 필요하다면</h2>
             <p class="muted">제작 의뢰, 음원 라이선싱, 브랜드 협업 — 무엇이든 남겨주세요.</p>
           </div>
@@ -148,6 +152,9 @@
         </div>
         <!-- 발매 일정 : 앨범마다 다른 프리세이브 링크를 D-day와 함께 (JS가 works.json에서 계산) -->
         <div id="release-schedule" class="schedule"></div>
+        <!-- 3D 앨범 커버플로우 (CSS 3D, JS가 works.json의 음반으로 채움) -->
+        <div class="cf-head"><p class="eyebrow">ALBUMS</p><span class="muted">← → 키 또는 클릭으로 넘기기</span></div>
+        <div id="coverflow" class="coverflow" tabindex="0" aria-label="앨범 커버플로우"></div>
         <div class="filter" id="works-filter">
           <button class="chip active" data-filter="all">전체</button>
           <button class="chip" data-filter="music">음악</button>
@@ -308,6 +315,8 @@
   <div class="cursor-glow" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/three-scenes.js"></script>
 </body>
 </html>
