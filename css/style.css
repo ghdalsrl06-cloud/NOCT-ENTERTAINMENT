@@ -900,3 +900,16 @@ h2.h3 { font-size: 1.6rem; }
 .field-3d[hidden] { display: none; }
 .hero-3d { pointer-events: none; }
 .hero { cursor: crosshair; }
+
+/* 히어로 로고 : 3D 렌더 이미지가 로딩되면 텍스트 로고를 숨기고 이미지를 보여줌 (rise 애니메이션 동일) */
+.hero-logo { position: relative; display: block; }
+.hero-logo.has-img .hero-title { display: none; }
+/* 렌더에는 ENTERTAINMENT가 없어(배경 제거 시 빠짐) 텍스트로 아래에 붙임 — 이미지가 있을 때만 */
+.hero-sub { display: none; font-family: var(--font-en); font-weight: 500; font-size: clamp(.8rem, 1.6vw, 1.05rem); letter-spacing: .58em; color: #b9bfd6; text-shadow: 0 0 14px rgba(111,140,255,.35); margin-top: 2px; }
+.hero-logo.has-img .hero-sub { display: block; animation: rise .9s ease .2s both; }
+.hero-logo { display: flex; flex-direction: column; align-items: center; }
+.hero-logo-img { order: -1; }
+/* 렌더 PNG는 위·아래 투명 여백이 큼(위 25%, 아래 40%) → 음수 마진으로 상쇄해 글자 기준으로 배치 */
+.hero-logo-img { display: block; width: min(880px, 100vw); height: auto; margin: -13% auto -22%; animation: rise .9s ease .1s both; filter: drop-shadow(0 0 40px rgba(111,140,255,.25)); }
+.hero-inner { max-width: 880px; }
+@media (max-width: 560px) { .hero-logo-img { width: 100%; margin: -13% 0 -22%; } .hero-logo { width: 100%; } }
