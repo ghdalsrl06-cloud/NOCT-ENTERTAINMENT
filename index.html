@@ -43,9 +43,11 @@
         <ul class="nav-links" role="tablist">
           <li><a href="#artists">아티스트</a></li>
           <li><a href="#works">작업</a></li>
+          <li><a href="#news">뉴스</a></li>
           <li><a href="#services">서비스</a></li>
           <li><a href="#licensing">라이선싱</a></li>
           <li><a href="#store">스토어</a></li>
+          <li><a href="#audition">오디션</a></li>
           <li><a href="#club">클럽 · 파트너</a></li>
           <li><a href="#contact" class="nav-cta">문의하기</a></li>
         </ul>
@@ -84,13 +86,13 @@
         <div class="hero-scroll" aria-hidden="true"><span></span></div>
       </div>
 
-      <!-- 지금 NOCT : 다음 발매 · 웹툰 최신화 · 최신 영상 -->
-      <div class="section home-now">
+      <!-- 릴리즈 피드 : 발매작·웹툰을 큰 카드로 (JS가 works.json에서 "지금과 가까운 순"으로 구성) -->
+      <div class="section home-feed">
         <div class="section-head row-head">
-          <div><p class="eyebrow">NOW</p><h2>지금 NOCT</h2><p id="next-release" class="next-release"></p></div>
+          <div><p class="eyebrow">RELEASES</p><h2>릴리즈</h2><p id="next-release" class="next-release"></p></div>
           <a href="#works" class="btn btn-sm">작업 전체 보기 →</a>
         </div>
-        <div id="now-grid" class="now-grid"><!-- JS가 채움 --></div>
+        <div id="feed" class="feed"><!-- JS가 채움 --></div>
       </div>
 
       <!-- 아티스트 한 줄 -->
@@ -102,6 +104,15 @@
           </div>
           <div id="home-artists" class="home-artist-list"><!-- JS가 아티스트 수만큼 채움 --></div>
         </div>
+      </div>
+
+      <!-- 뉴스 최신 3건 -->
+      <div class="section home-news">
+        <div class="section-head row-head">
+          <div><p class="eyebrow">NEWS</p><h2>뉴스</h2></div>
+          <a href="#news" class="btn btn-sm">전체 보기 →</a>
+        </div>
+        <div id="home-news" class="news-list compact"><!-- JS가 채움 --></div>
       </div>
 
       <!-- 서비스 미니 타일 -->
@@ -162,6 +173,71 @@
           <button class="chip" data-filter="video">영상</button>
         </div>
         <div id="works-grid" class="works-grid"></div>
+      </div>
+    </section>
+
+    <!-- =================== NEWS =================== -->
+    <section id="news" class="view" hidden>
+      <div class="section">
+        <div class="section-head">
+          <p class="eyebrow">NEWS</p>
+          <h2>뉴스</h2>
+          <p class="section-desc">발매, 웹툰 업데이트, 비하인드 스토리, 공지 — NOCT의 소식을 시간순으로.</p>
+        </div>
+        <div class="filter" id="news-filter">
+          <button class="chip active" data-tag="all">전체</button>
+          <button class="chip" data-tag="RELEASE">발매</button>
+          <button class="chip" data-tag="WEBTOON">웹툰</button>
+          <button class="chip" data-tag="BLOG">비하인드</button>
+          <button class="chip" data-tag="NOTICE">공지</button>
+        </div>
+        <div id="news-list" class="news-list"></div>
+        <div class="news-more"><button class="btn btn-ghost" id="news-more" hidden>더 보기</button></div>
+      </div>
+    </section>
+
+    <!-- =================== AUDITION =================== -->
+    <section id="audition" class="view" hidden>
+      <div class="section">
+        <div class="section-head">
+          <p class="eyebrow">AUDITION</p>
+          <h2>오디션 · 데모</h2>
+          <p class="section-desc">다음 밤을 함께 만들 아티스트를 찾습니다. 장르는 열려 있어요 — 밤에 어울리는 음악이라면.</p>
+        </div>
+        <div class="audition-grid">
+          <div class="audition-card">
+            <p class="eyebrow">WHO WE'RE LOOKING FOR</p>
+            <h3>이런 아티스트</h3>
+            <div class="chips">
+              <span class="chip-tag">다크 일렉트로닉</span><span class="chip-tag">얼터너티브 J-POP / K-POP</span><span class="chip-tag">다크 R&B</span>
+              <span class="chip-tag">저지 클럽 · 베이스</span><span class="chip-tag">로파이 · 앰비언트</span><span class="chip-tag">보컬리스트</span><span class="chip-tag">프로듀서 · 작곡가</span>
+            </div>
+            <p class="muted">직접 곡을 쓰고 부르는 싱어송라이터, 프로듀서, 보컬리스트 모두 환영해요. 웹툰·영상과 연결되는 세계관을 가진 프로젝트라면 더 좋습니다. 활동 지역과 언어는 상관없어요 (한국어 · 일본어 · 영어).</p>
+          </div>
+          <div class="audition-card">
+            <p class="eyebrow">WHAT TO SEND</p>
+            <h3>보내주실 것</h3>
+            <ul class="audition-list">
+              <li><b>데모 2~3곡</b> — 스트리밍 링크(SoundCloud · YouTube · 드라이브)로. 미완성이어도 괜찮아요.</li>
+              <li><b>짧은 소개</b> — 어떤 음악을 하는지, 어떤 밤을 노래하는지 3~5줄.</li>
+              <li><b>SNS · 활동 링크</b> — 있는 만큼만.</li>
+              <li><b>희망 방향</b> — 소속 · 프로듀싱 협업 · 곡 제공 중 어느 쪽인지.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="process">
+          <div class="process-step"><span>01</span><b>데모 접수</b><p>아래 버튼으로 문의 폼에 보내주세요. 접수 즉시 자동 응답은 없지만 전부 듣습니다.</p></div>
+          <div class="process-step"><span>02</span><b>검토</b><p>영업일 기준 2주 안에 답변드려요. 결과와 상관없이 짧은 피드백을 드립니다.</p></div>
+          <div class="process-step"><span>03</span><b>미팅</b><p>온라인으로 방향과 조건을 이야기해요. 서울 · 도쿄 대면도 가능합니다.</p></div>
+          <div class="process-step"><span>04</span><b>함께 만들기</b><p>첫 프로젝트(싱글 또는 EP)부터 시작해 라인업으로 확장합니다.</p></div>
+        </div>
+        <div class="audition-cta bracket">
+          <div>
+            <h3>데모 보내기</h3>
+            <p class="muted">문의 폼이 열리고 항목이 미리 채워져요. 링크만 붙여 넣으면 됩니다.</p>
+          </div>
+          <button class="btn btn-primary" data-contact="오디션 · 데모" data-detail="[데모 제출]&#10;아티스트명: &#10;장르: &#10;데모 링크(2~3곡): &#10;소개: &#10;SNS / 활동 링크: &#10;희망 방향(소속 · 협업 · 곡 제공): ">데모 보내기</button>
+        </div>
       </div>
     </section>
 
@@ -279,6 +355,7 @@
                 <option>음원 라이선싱</option>
                 <option>스토어 · 굿즈</option>
                 <option>멤버십 · 협업</option>
+                <option>오디션 · 데모</option>
                 <option>기타</option>
               </select>
             </label>
@@ -331,9 +408,11 @@
       <ul class="footer-links">
         <li><a href="#artists">아티스트</a></li>
         <li><a href="#works">작업</a></li>
+        <li><a href="#news">뉴스</a></li>
         <li><a href="#services">서비스</a></li>
         <li><a href="#licensing">라이선싱</a></li>
         <li><a href="#store">스토어</a></li>
+        <li><a href="#audition">오디션</a></li>
         <li><a href="#contact">문의</a></li>
       </ul>
     </div>
