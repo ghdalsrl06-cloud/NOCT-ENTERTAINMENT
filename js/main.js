@@ -31,11 +31,14 @@ async function loadJSON(path) {
 }
 
 // ===== 아티스트 =====
+// 아티스트가 늘어나도 카드가 자동으로 늘어나는 그리드. 마지막엔 "데모 보내기" 카드가 붙어요.
 function renderArtists(list) {
   const root = $("#artist-list");
   root.innerHTML = list.map((a) => `
     <article class="artist-card reveal">
-      <img src="${esc(a.image)}" alt="${esc(a.name)}" loading="lazy" />
+      <div class="artist-media" style="--img:url('${esc(a.image)}')">
+        <img src="${esc(a.image)}" alt="${esc(a.name)}" loading="lazy" style="object-position:${esc(a.imagePos || "center")}" />
+      </div>
       <div class="artist-body">
         <p class="eyebrow">${esc(a.role)}</p>
         <h3 class="artist-name">${esc(a.name)}<small>${esc(a.nameJa || "")}</small></h3>
@@ -46,7 +49,18 @@ function renderArtists(list) {
           ${Object.entries(a.links || {}).map(([k, v]) => `<a class="btn btn-sm" href="${esc(v)}" target="_blank" rel="noopener">${esc(LINK_LABEL[k] || k)}</a>`).join("")}
         </div>
       </div>
-    </article>`).join("");
+    </article>`).join("") + `
+    <article class="artist-card artist-recruit reveal">
+      <div class="artist-body">
+        <p class="eyebrow">NEXT ARTIST</p>
+        <h3 class="artist-name">?</h3>
+        <p class="artist-role">다음 밤을 함께 만들 아티스트를 찾고 있어요</p>
+        <p class="artist-desc">다크 일렉트로닉, 얼터너티브 J-POP/K-POP, 로파이, 앰비언트 — 밤에 어울리는 음악이라면 장르는 열려 있어요. 데모와 소개를 보내주세요.</p>
+        <div class="link-row">
+          <button class="btn btn-sm btn-primary" data-contact="기타" data-detail="[데모 제출] 아티스트명: / 장르: / 데모 링크: / 소개: ">데모 보내기</button>
+        </div>
+      </div>
+    </article>`;
 
   // 문의 섹션 옆 링크에도 아티스트 링크 노출
   const side = $("#side-links");
@@ -61,10 +75,13 @@ const LINK_LABEL = { site: "공식 사이트", youtube: "YouTube", spotify: "Spo
 const KIND_LABEL = { music: "MUSIC", webtoon: "WEBTOON", video: "VIDEO" };
 // 작업물 카드 한 장의 HTML (작업 탭과 홈 "지금 NOCT"에서 공용)
 function workCard(w) {
+  // 이미지는 자르지 않고(contain) 전체를 보여주고, 남는 공간은 같은 이미지를 흐리게 깔아 채움
   return `
-    <a class="work reveal ${w.type === "webtoon" ? "wide" : ""}" data-type="${esc(w.type)}" href="${esc(w.link || "#")}" ${w.link ? 'target="_blank" rel="noopener"' : ""}>
+    <a class="work reveal" data-type="${esc(w.type)}" href="${esc(w.link || "#")}" ${w.link ? 'target="_blank" rel="noopener"' : ""}>
       ${w.badge ? `<span class="work-badge">${esc(w.badge)}</span>` : ""}
-      <img src="${esc(w.cover)}" alt="${esc(w.title)}" loading="lazy" />
+      <div class="work-media" style="--img:url('${esc(w.cover)}')">
+        <img src="${esc(w.cover)}" alt="${esc(w.title)}" loading="lazy" />
+      </div>
       <div class="work-body">
         <span class="work-kind">${esc(KIND_LABEL[w.type] || w.type)}${w.line ? " · " + esc(w.line) : ""}</span>
         <div class="work-title">${esc(w.title)}</div>
@@ -98,6 +115,12 @@ function renderServices(list) {
     </article>`).join("");
 }
 
+// ===== 발매일 도우미 =====
+const TODAY = new Date(); TODAY.setHours(0, 0, 0, 0);
+const isUpcoming = (iso) => !!iso && new Date(iso + "T00:00:00") > TODAY;        // 아직 공개 전인가
+const dDay = (iso) => Math.ceil((new Date(iso + "T00:00:00") - TODAY) / 86400000);  // 며칠 남았나
+const fmtMD = (iso) => iso.slice(5).replace("-", ".");                              // "2026-09-11" → "09.11"
+
 // ===== 라이선싱 카탈로그 =====
 let TRACKS = [];
 function renderCatalog() {
@@ -105,22 +128,58 @@ function renderCatalog() {
   const line = $("#track-filter .chip.active")?.dataset.line || "all";
   const rows = TRACKS.filter((t) => {
     const okLine = line === "all" || t.line === line;
-    const hay = [t.title, t.titleKo, t.album, t.mood, t.line].join(" ").toLowerCase();
+    const hay = [t.title, t.titleKo, t.artist, t.album, t.mood, t.line].join(" ").toLowerCase();
     return okLine && (!q || hay.includes(q));
   });
-  $("#catalog tbody").innerHTML = rows.map((t, i) => `
-    <tr>
+  $("#catalog tbody").innerHTML = rows.map((t, i) => {
+    const soon = isUpcoming(t.release);
+    return `
+    <tr class="${soon ? "is-soon" : ""}">
       <td class="muted">${String(i + 1).padStart(2, "0")}</td>
       <td class="t-title">${esc(t.title)}${t.titleKo ? `<small>${esc(t.titleKo)}</small>` : ""}</td>
+      <td class="t-artist">${esc(t.artist || "")}</td>
       <td>${esc(t.album)}</td>
       <td class="t-line">${esc(t.line)}</td>
       <td class="muted">${esc(t.bpm)} · ${esc(t.mood)}</td>
+      <td>${soon ? `<span class="chip-soon">🔒 ${fmtMD(t.release)} 공개</span>` : `<span class="chip-live">공개</span>`}</td>
       <td class="t-actions">
-        ${t.preview ? `<a class="btn btn-sm" href="${esc(t.preview)}" target="_blank" rel="noopener">▶ 듣기</a>` : ""}
-        <button class="btn btn-sm btn-primary" data-contact="음원 라이선싱" data-detail="[라이선스 문의] ${esc(t.title)} (${esc(t.album)}) — 사용처: ">문의</button>
+        ${soon
+          ? (t.presave ? `<a class="btn btn-sm" href="${esc(t.presave)}" target="_blank" rel="noopener">프리세이브</a>` : `<span class="btn btn-sm btn-disabled">D-${dDay(t.release)}</span>`)
+          : (t.preview ? `<a class="btn btn-sm" href="${esc(t.preview)}" target="_blank" rel="noopener">▶ 듣기</a>` : "")}
+        <button class="btn btn-sm btn-primary" data-contact="음원 라이선싱" data-detail="[라이선스 문의] ${esc(t.artist || "")} — ${esc(t.title)} (${esc(t.album)})${soon ? " · 선공개 라이선스" : ""} — 사용처: ">문의</button>
       </td>
-    </tr>`).join("") || `<tr><td colspan="6" class="muted" style="text-align:center;padding:28px">검색 결과가 없어요.</td></tr>`;
-  $("#catalog-count").textContent = `총 ${TRACKS.length}곡 중 ${rows.length}곡 표시`;
+    </tr>`; }).join("") || `<tr><td colspan="8" class="muted" style="text-align:center;padding:28px">검색 결과가 없어요.</td></tr>`;
+  const soonCount = rows.filter((t) => isUpcoming(t.release)).length;
+  $("#catalog-count").textContent = `총 ${TRACKS.length}곡 중 ${rows.length}곡 표시 · 이 중 ${soonCount}곡은 공개 전 (프리세이브 가능, 선공개 라이선스는 문의)`;
+}
+
+// ===== 발매 일정 : 앨범마다 다른 프리세이브 링크를 D-day와 함께 =====
+function renderSchedule(works) {
+  const upcoming = works.filter((w) => w.type === "music" && isUpcoming(w.release)).sort((a, b) => a.release.localeCompare(b.release));
+  const box = $("#release-schedule");
+  if (!upcoming.length) { box.hidden = true; return; }
+  box.innerHTML = `
+    <div class="schedule-head"><p class="eyebrow">RELEASE SCHEDULE</p><span class="muted">발매 예정 ${upcoming.length}장 · 앨범별 프리세이브</span></div>
+    <div class="schedule-track">
+      ${upcoming.map((w, i) => `
+        <div class="schedule-item ${i === 0 ? "is-next" : ""}">
+          <span class="schedule-dday">${i === 0 ? "NEXT · " : ""}D-${dDay(w.release)}</span>
+          <b>${esc(w.title)}</b>
+          <small>${esc(w.subtitle || "")}</small>
+          <span class="schedule-date">${esc(w.release.replace(/-/g, "."))}</span>
+          ${w.presave
+            ? `<a class="btn btn-sm ${i === 0 ? "btn-primary" : ""}" href="${esc(w.presave)}" target="_blank" rel="noopener">프리세이브</a>`
+            : `<button class="btn btn-sm btn-ghost" data-contact="스토어 · 굿즈" data-detail="[발매 알림] ${esc(w.title)} (${esc(w.release)})">발매 알림</button>`}
+        </div>`).join("")}
+    </div>`;
+
+  // 홈 "지금 NOCT" 제목 아래 한 줄
+  const next = upcoming[0];
+  const line = $("#next-release");
+  if (line && next) {
+    line.innerHTML = `다음 발매 <b>D-${dDay(next.release)}</b> · ${esc(next.title)} (${fmtMD(next.release)})` +
+      (next.presave ? ` · <a href="${esc(next.presave)}" target="_blank" rel="noopener">프리세이브 →</a>` : "");
+  }
 }
 
 // ===== 스토어 =====
@@ -145,18 +204,18 @@ function renderHome(works, artists, services) {
   const now = works.filter((w) => w.badge).slice(0, 3);
   $("#now-grid").innerHTML = now.map(workCard).join("");
 
-  // 아티스트 한 줄
-  const a = artists[0];
-  if (a) {
-    $("#home-artist").innerHTML = `
-      <img src="${esc(a.image)}" alt="${esc(a.name)}" loading="lazy" />
-      <div>
+  // 아티스트 (여러 명이어도 카드가 자동으로 늘어남)
+  $("#home-artists").innerHTML = artists.map((a) => `
+    <a class="home-artist-card reveal" href="#artists">
+      <div class="artist-media" style="--img:url('${esc(a.image)}')">
+        <img src="${esc(a.image)}" alt="${esc(a.name)}" loading="lazy" style="object-position:${esc(a.imagePos || "center")}" />
+      </div>
+      <div class="home-artist-body">
         <p class="eyebrow">${esc(a.role)}</p>
         <h3 class="artist-name">${esc(a.name)}<small>${esc(a.nameJa || "")}</small></h3>
         <p class="artist-desc">${esc(a.tagline)}</p>
       </div>
-      <a href="#artists" class="btn btn-ghost">아티스트 보기</a>`;
-  }
+    </a>`).join("");
 
   // 서비스 미니 타일
   $("#home-service-grid").innerHTML = services.map((s) => `
@@ -176,7 +235,18 @@ function showView(id, opts = {}) {
   if (opts.scroll !== false) window.scrollTo({ top: 0, behavior: "instant" });
   observeReveal();
 }
+// 뒤로가기/앞으로가기 대응
 window.addEventListener("hashchange", () => showView(location.hash.slice(1) || "home"));
+// 탭 링크(#works 등)는 클릭 즉시 화면을 바꿈 — 브라우저의 해시 이동 타이밍에 기대지 않아 한 번에 열림
+document.addEventListener("click", (e) => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a) return;
+  const id = a.getAttribute("href").slice(1);
+  if (!VIEWS.some((v) => v.id === id)) return;
+  e.preventDefault();
+  if (location.hash !== "#" + id) history.pushState(null, "", "#" + id);
+  showView(id);
+});
 
 // ===== 문의 폼 =====
 // data-contact / data-detail 버튼을 누르면 문의 탭으로 이동하면서 유형·내용을 미리 채움
@@ -186,7 +256,8 @@ function bindContactShortcuts() {
     if (!btn) return;
     $("#c-type").value = btn.dataset.contact;
     if (btn.dataset.detail) $("#c-detail").value = btn.dataset.detail;
-    if (location.hash !== "#contact") location.hash = "#contact"; else showView("contact");
+    if (location.hash !== "#contact") history.pushState(null, "", "#contact");
+    showView("contact");
     setTimeout(() => $("#c-detail").focus(), 400);
   });
 }
@@ -312,10 +383,10 @@ if (FINE_POINTER && !REDUCED) {
 
 // (4) 카드 틸트 + 유리 하이라이트 — 렌더된 카드에 적용
 function applyTilt() {
-  const cards = $$(".work, .service, .product, .tier, .duo-card, .artist-card, .home-artist-card, .tile");
+  const cards = $$(".work, .service, .product, .tier, .duo-card, .artist-card, .home-artist-card, .tile, .schedule-item");
   cards.forEach((card) => {
     card.classList.add("tilt");
-    if (card.matches(".artist-card, .duo-card, .home-artist-card")) card.classList.add("bracket");
+    if (card.matches(".artist-card, .duo-card")) card.classList.add("bracket");
     if (!FINE_POINTER || REDUCED) return;
     const strength = card.matches(".artist-card, .duo-card, .home-artist-card") ? 2 : 6; // 큰 카드는 살짝만
     card.addEventListener("pointermove", (e) => {
@@ -356,6 +427,7 @@ function applyAssets(assets) {
     renderCatalog();
     renderStore(store);
     renderHome(works, artists, services);
+    renderSchedule(works);
     applyAssets(assets);
     applyTilt();
     bindContactShortcuts();

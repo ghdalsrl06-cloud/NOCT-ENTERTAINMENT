@@ -130,13 +130,19 @@ h1, h2, h3 { font-weight: 500; letter-spacing: -0.01em; }
 .section-head h2 { font-size: clamp(1.8rem, 3.4vw, 2.4rem); margin-top: 10px; }
 .section-desc { color: var(--muted); margin-top: 10px; max-width: 560px; }
 
-/* ===== 아티스트 ===== */
+/* ===== 아티스트 (여러 명 대비 : 카드 그리드) ===== */
+.artist-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(440px, 1fr)); gap: 20px; }
 .artist-card {
-  display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center;
+  display: flex; flex-direction: column;
   background: var(--surface); border: 1px solid var(--line); border-radius: 20px; overflow: hidden;
 }
-.artist-card img { width: 100%; height: 100%; min-height: 380px; object-fit: cover; display: block; }
-.artist-body { padding: 40px 40px 40px 0; }
+/* 아티스트 사진 : 16:9 영역에 원본 전체 표시 + 흐린 배경 채움 */
+.artist-media { position: relative; aspect-ratio: 16/9; overflow: hidden; background: var(--surface-2); }
+.artist-media::before { content: ""; position: absolute; inset: -12%; background: var(--img) center / cover no-repeat; filter: blur(24px) brightness(.4); }
+.artist-media img { position: relative; width: 100%; height: 100%; object-fit: contain; display: block; }
+.artist-body { padding: 28px 30px 30px; }
+.artist-recruit { border-style: dashed; justify-content: center; background: transparent; }
+.artist-recruit .artist-name { color: var(--accent); }
 .artist-name { font-family: var(--font-en); font-size: 2.4rem; font-weight: 700; letter-spacing: 0.08em; }
 .artist-name small { font-family: var(--font-ko); font-weight: 400; font-size: 1.1rem; color: var(--muted); margin-left: 12px; letter-spacing: 0; }
 .artist-role { color: var(--accent); font-size: 0.88rem; margin-top: 6px; }
@@ -161,8 +167,13 @@ h1, h2, h3 { font-weight: 500; letter-spacing: -0.01em; }
   border: 1px solid var(--line); transition: transform .3s, border-color .3s; display: block;
 }
 .work:hover { transform: translateY(-6px); border-color: var(--accent); }
-.work img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: var(--surface-2); }
-.work.wide img { aspect-ratio: 16/10; }
+/* 이미지 영역 : 원본을 자르지 않고(contain) 보여주고, 빈 공간은 같은 이미지를 흐리게 깔아 채움 */
+.work-media { position: relative; aspect-ratio: 1; overflow: hidden; background: var(--surface-2); }
+.work-media::before {
+  content: ""; position: absolute; inset: -12%;
+  background: var(--img) center / cover no-repeat; filter: blur(22px) brightness(.45) saturate(1.2);
+}
+.work-media img { position: relative; width: 100%; height: 100%; object-fit: contain; display: block; }
 .work-body { padding: 14px 16px 16px; }
 .work-kind { font-family: var(--font-en); font-size: 0.66rem; letter-spacing: .25em; color: var(--accent); }
 .work-title { font-size: 0.98rem; font-weight: 500; margin-top: 4px; line-height: 1.4; }
@@ -204,7 +215,7 @@ h1, h2, h3 { font-weight: 500; letter-spacing: -0.01em; }
 }
 #track-search:focus { outline: 2px solid var(--accent); }
 .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); }
-.catalog { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 720px; }
+.catalog { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 980px; }
 .catalog th { text-align: left; font-weight: 500; color: var(--muted); font-size: .78rem; letter-spacing: .08em; padding: 14px 16px; border-bottom: 1px solid var(--line); background: var(--surface); }
 .catalog td { padding: 13px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; }
 .catalog tr:last-child td { border-bottom: 0; }
@@ -324,6 +335,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 .tilt:hover::before { opacity: 1; }
 .tilt > * { position: relative; z-index: 2; }
+.tilt > .work-badge { position: absolute; z-index: 3; } /* 배지는 절대 위치를 유지해야 이미지 위에 떠 있음 */
 
 /* 모서리 브래킷 (큰 카드) */
 .bracket { position: relative; }
@@ -381,17 +393,47 @@ body.has-cursor .cursor-glow { opacity: 1; }
 
 /* 지금 NOCT : 3장 */
 .now-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-.now-grid .work img { aspect-ratio: 16/11; }
-
-/* 홈 아티스트 한 줄 */
-.home-artist { padding-top: 70px; padding-bottom: 70px; }
-.home-artist-card {
-  display: grid; grid-template-columns: 200px 1fr auto; gap: 32px; align-items: center;
-  background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 24px 28px;
+/* ===== 발매 일정 (작업 탭 상단) ===== */
+.schedule { margin-bottom: 36px; padding: 22px 24px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+.schedule-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; font-size: .85rem; }
+.schedule-track { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(200px, 1fr); gap: 12px; overflow-x: auto; padding-bottom: 6px; }
+.schedule-item {
+  display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: 12px;
+  border: 1px solid var(--line); background: var(--surface-2); min-width: 0;
 }
-.home-artist-card img { width: 200px; height: 200px; object-fit: cover; border-radius: 14px; display: block; }
-.home-artist-card .artist-name { font-size: 1.8rem; }
-.home-artist-card .artist-desc { margin-top: 10px; }
+.schedule-item.is-next { border-color: var(--accent); background: linear-gradient(160deg, #1b2038, var(--surface-2)); }
+.schedule-dday { font-family: var(--font-en); font-size: .68rem; letter-spacing: .2em; color: var(--accent); }
+.schedule-item b { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.schedule-item small { color: var(--muted); font-size: .78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.schedule-date { font-family: var(--font-en); font-size: .74rem; color: var(--muted); margin-bottom: 8px; }
+.schedule-item .btn { margin-top: auto; width: 100%; text-align: center; }
+
+/* 카탈로그 공개 상태 */
+.chip-soon, .chip-live { display: inline-block; font-size: .72rem; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.chip-soon { background: rgba(111,140,255,.12); color: var(--accent-soft); border: 1px solid rgba(111,140,255,.3); }
+.chip-live { color: var(--muted); border: 1px solid var(--line); }
+.catalog tr.is-soon .t-title { opacity: .85; }
+.catalog .t-artist { font-family: var(--font-en); font-size: .82rem; letter-spacing: .05em; white-space: nowrap; }
+.btn-disabled { opacity: .5; cursor: default; pointer-events: none; }
+.tier .btn { margin-top: 4px; }
+
+/* 홈 아티스트 : 인원수만큼 자동 배치 (1명이면 넓게, 여러 명이면 나란히) */
+.home-artist { padding-top: 80px; padding-bottom: 80px; }
+.home-artist-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
+.home-artist-card {
+  display: grid; grid-template-columns: 240px 1fr; align-items: center; gap: 0;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 20px; overflow: hidden;
+  transition: border-color .25s;
+}
+.home-artist-card:hover { border-color: var(--accent); }
+.home-artist-card .artist-media { aspect-ratio: 16/9; height: 100%; min-height: 150px; }
+.home-artist-body { padding: 22px 26px; }
+.home-artist-card .artist-name { font-size: 1.6rem; }
+.home-artist-card .artist-desc { margin-top: 8px; font-size: .9rem; }
+.next-release { margin-top: 8px; color: var(--muted); font-size: .9rem; }
+.next-release b { color: var(--accent); font-family: var(--font-en); }
+.next-release a { color: var(--text); border-bottom: 1px solid var(--line); }
+.next-release a:hover { border-color: var(--accent); color: var(--accent); }
 
 /* 서비스 미니 타일 */
 .tile-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
@@ -439,9 +481,9 @@ body.has-cursor .cursor-glow { opacity: 1; }
   .nav-links.open { display: flex; }
   .nav-links a { display: block; padding: 15px 24px; border-top: 1px solid var(--line); }
   .nav-cta { border: 0; border-radius: 0; }
-  .artist-card { grid-template-columns: 1fr; }
-  .artist-card img { min-height: 260px; max-height: 360px; }
-  .artist-body { padding: 28px; }
+  .artist-list { grid-template-columns: 1fr; }
+  .artist-body { padding: 24px; }
+  .home-artist-card { grid-template-columns: 1fr; }
   .duo, .contact-wrap { grid-template-columns: 1fr; }
   .contact-side { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 28px; }
   .section { padding: 80px 20px; }
