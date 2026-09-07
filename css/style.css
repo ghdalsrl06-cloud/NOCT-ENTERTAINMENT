@@ -773,8 +773,9 @@ a.news-row:hover, button.news-row:hover { background: var(--surface); }
 .artist-hero { display: grid; grid-template-columns: 320px 1fr; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; }
 .artist-hero-media { position: relative; display: block; min-height: 380px; background: var(--surface-2); overflow: hidden; }
 .artist-hero-media::before { content: ""; position: absolute; inset: -12%; background: var(--img) center / cover no-repeat; filter: blur(24px) brightness(.4); }
-/* 사진 전체가 보이도록 contain + 흐린 배경 채움 (어떤 비율의 사진이 와도 잘리지 않음) */
-.artist-hero-media img { position: relative; width: 100%; height: 100%; object-fit: contain; display: block; transition: transform .6s; }
+/* 세로 키비주얼이 칸을 꽉 채우도록 cover (인물 위아래 여백이 넉넉한 이미지라 잘리지 않음). 세로가 짧은 사진이 오면 아래 .is-wide 로 contain 전환 */
+.artist-hero-media img { position: relative; width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; transition: transform .6s; }
+.artist-hero-media.is-wide img { object-fit: contain; }
 .artist-hero-media:hover img { transform: scale(1.03); }
 .artist-hero-body { padding: 30px 32px 32px; min-width: 0; }
 .artist-hero-body .artist-name { font-size: 2.2rem; margin-top: 8px; }
@@ -813,7 +814,7 @@ a.news-row:hover, button.news-row:hover { background: var(--surface); }
   .spot-dday { position: static; text-align: left; padding: 22px 24px 0; }
   .spot-dday b { font-size: 2rem; }
   .artist-hero { grid-template-columns: 1fr; }
-  .artist-hero-media { min-height: 0; aspect-ratio: 3/4; }
+  .artist-hero-media { min-height: 0; aspect-ratio: 2/3; }
   .artist-hero-body { padding: 24px; }
   .home-sec .section-num { top: 24px; }
   .ticker-item { padding: 0 16px; }
