@@ -913,3 +913,9 @@ h2.h3 { font-size: 1.6rem; }
 .hero-logo-img { display: block; width: min(880px, 100vw); height: auto; margin: -13% auto -22%; animation: rise .9s ease .1s both; filter: drop-shadow(0 0 40px rgba(111,140,255,.25)); }
 .hero-inner { max-width: 880px; }
 @media (max-width: 560px) { .hero-logo-img { width: 100%; margin: -13% 0 -22%; } .hero-logo { width: 100%; } }
+
+/* 내비·푸터 워드마크 : 3D 렌더가 로딩되면 NOCT 텍스트 대신 렌더(글자 부분만 보이도록 여백을 잘라낸 박스) */
+.wordmark.has-img .wm-main { display: none; }
+.wm-img-box { position: relative; display: block; width: 92px; height: 22px; overflow: visible; margin-bottom: 4px; }
+.wm-img { position: absolute; width: 111px; max-width: none; left: -9px; top: -15px; filter: drop-shadow(0 0 6px rgba(111,140,255,.35)); }
+.wordmark.has-img .wm-sub { margin-top: 0; }

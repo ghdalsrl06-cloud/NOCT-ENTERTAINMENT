@@ -819,7 +819,16 @@ function applyAssets(assets) {
     img.className = "hero-logo-img";
     img.alt = "NOCT ENTERTAINMENT";
     img.decoding = "async";
-    img.onload = () => { heroLogo.appendChild(img); heroLogo.classList.add("has-img"); };
+    img.onload = () => {
+      heroLogo.appendChild(img); heroLogo.classList.add("has-img");
+      // 내비·푸터 워드마크에도 같은 렌더를 작게 (투명 여백을 잘라 글자 기준으로 맞추는 박스 안에)
+      $$(".wordmark .wm-text").forEach((t) => {
+        const box = document.createElement("span"); box.className = "wm-img-box";
+        const i = img.cloneNode(); i.className = "wm-img"; i.alt = "NOCT";
+        box.appendChild(i); t.insertBefore(box, t.firstChild);
+        t.closest(".wordmark").classList.add("has-img");
+      });
+    };
     img.src = assets.heroLogo;
   }
   const aud = $("#audition-hero");
