@@ -72,6 +72,7 @@
 - NOCT 단독 워드마크(C = 달 마크) 벡터: `assets/logo-noct.svg` · PNG `assets/logo-noct.png`
 - 유튜브 채널 프로필(정사각): `data/assets.json` 의 `youtubeAvatar`(검은 가면 인물), `youtubeAvatarText`(NOCT 텍스트만)
 - 유튜브 채널 배너(2048×1152, NOCT ENTERTAINMENT 로고 중앙): `data/assets.json` 의 `youtubeBanner`
+- 유튜브 채널 번역문(15개 언어, 붙여넣기용): `docs/youtube-channel-translations.md`
 
 ## 로컬에서 보기
 
