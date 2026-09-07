@@ -57,7 +57,7 @@ function renderArtists(list) {
         <p class="artist-role">다음 밤을 함께 만들 아티스트를 찾고 있어요</p>
         <p class="artist-desc">다크 일렉트로닉, 얼터너티브 J-POP/K-POP, 로파이, 앰비언트 — 밤에 어울리는 음악이라면 장르는 열려 있어요. 데모와 소개를 보내주세요.</p>
         <div class="link-row">
-          <button class="btn btn-sm btn-primary" data-contact="기타" data-detail="[데모 제출] 아티스트명: / 장르: / 데모 링크: / 소개: ">데모 보내기</button>
+          <a class="btn btn-sm btn-primary" href="#audition">오디션 안내 · 데모 보내기</a>
         </div>
       </div>
     </article>`;
@@ -408,11 +408,85 @@ function renderCoverflow(works) {
   update();
 }
 
+
+// ===== 릴리즈 피드 (홈) =====
+// 발매작·웹툰 회차를 "오늘과 가까운 순"으로 큰 카드로 나열 — 곧 나올 것과 방금 나온 것이 위로 옵니다.
+function renderFeed(works) {
+  const root = $("#feed");
+  if (!root) return;
+  // 웹툰은 같은 시리즈의 최신 회차 1건만 피드에 올림(회차가 피드를 독점하지 않도록)
+  const seenSeries = new Set();
+  const items = works
+    .filter((w) => w.release && (w.type === "music" || w.type === "webtoon"))
+    .sort((a, b) => Math.abs(new Date(a.release + "T00:00:00") - TODAY) - Math.abs(new Date(b.release + "T00:00:00") - TODAY))
+    .filter((w) => {
+      if (w.type !== "webtoon") return true;
+      if (seenSeries.has(w.title)) return false;
+      seenSeries.add(w.title); return true;
+    })
+    .slice(0, 6);
+  root.innerHTML = items.map((w) => {
+    const soon = isUpcoming(w.release), d = dDay(w.release);
+    const status = w.type === "webtoon"
+      ? `<span class="chip-live">${d === 0 ? "오늘 업데이트" : "연재 중"}</span>`
+      : soon ? `<span class="chip-soon">🔒 ${fmtMD(w.release)} 공개 · D-${d}</span>` : `<span class="chip-live">발매 · ${fmtMD(w.release)}</span>`;
+    const primary = w.type === "webtoon"
+      ? `<a class="btn btn-sm btn-primary" href="${esc(w.link)}" target="_blank" rel="noopener">회차 보기</a>`
+      : soon
+        ? (w.presave ? `<a class="btn btn-sm btn-primary" href="${esc(w.presave)}" target="_blank" rel="noopener">프리세이브</a>` : `<button class="btn btn-sm btn-primary" data-contact="스토어 · 굿즈" data-detail="[발매 알림] ${esc(w.title)}">발매 알림</button>`)
+        : `<a class="btn btn-sm btn-primary" href="${esc(w.link)}" target="_blank" rel="noopener">▶ 듣기</a>`;
+    const secondary = w.type === "music" && w.albumId ? `<button class="btn btn-sm" data-album-open="${esc(w.albumId)}">트랙리스트</button>` : "";
+    return `
+    <article class="feed-item reveal ${soon ? "is-soon" : ""}">
+      <div class="feed-media" style="--img:url('${esc(w.cover)}')"><img src="${esc(w.cover)}" alt="${esc(w.title)}" loading="lazy" />${w.badge ? `<span class="work-badge">${esc(w.badge)}</span>` : ""}</div>
+      <div class="feed-body">
+        <span class="work-kind">${esc(KIND_LABEL[w.type] || w.type)}${w.line ? " · " + esc(w.line) : ""} · ${esc(w.artist || "")}</span>
+        <h3 class="feed-title">${esc(w.title)}</h3>
+        <p class="feed-sub">${esc(w.subtitle || "")}</p>
+        <p class="feed-status">${status}</p>
+        ${w.description ? `<p class="feed-desc">${esc(w.description)}</p>` : ""}
+        <div class="feed-actions">${primary}${secondary}</div>
+      </div>
+    </article>`;
+  }).join("");
+}
+
+// ===== 뉴스 =====
+// news.json(비하인드·웹툰·공지) + works.json의 발매작(자동 RELEASE)을 합쳐 날짜순으로.
+let NEWS = [], newsTag = "all", newsShown = 12;
+const TAG_LABEL = { RELEASE: "발매", WEBTOON: "웹툰", BLOG: "비하인드", NOTICE: "공지" };
+function buildNews(news, works) {
+  const releases = works.filter((w) => w.type === "music" && w.release).map((w) => ({
+    date: w.release, tag: "RELEASE", artist: w.artist, albumId: w.albumId,
+    title: `${w.title} — ${w.subtitle || ""}${isUpcoming(w.release) ? " 발매 예정" : " 발매"}`,
+    summary: w.description || "", link: isUpcoming(w.release) ? (w.presave || "") : (w.link || ""),
+  }));
+  NEWS = [...news, ...releases].sort((a, b) => b.date.localeCompare(a.date));
+}
+function newsRow(n) {
+  const soon = n.tag === "RELEASE" && isUpcoming(n.date);
+  const inner = `
+    <span class="news-date">${esc(n.date.replace(/-/g, "."))}</span>
+    <span class="news-tag tag-${esc(n.tag)}">${esc(TAG_LABEL[n.tag] || n.tag)}</span>
+    <span class="news-main"><b>${esc(n.title)}</b>${n.summary ? `<small>${esc(n.summary)}</small>` : ""}</span>
+    <span class="news-arrow">${n.albumId ? "트랙리스트 ›" : n.link ? "열기 ›" : ""}</span>`;
+  if (n.albumId) return `<button class="news-row" data-album-open="${esc(n.albumId)}">${inner}</button>`;
+  if (n.link) return `<a class="news-row" href="${esc(n.link)}" target="_blank" rel="noopener">${inner}</a>`;
+  return `<div class="news-row">${inner}</div>`;
+}
+function renderNews() {
+  const rows = NEWS.filter((n) => newsTag === "all" || n.tag === newsTag);
+  $("#news-list").innerHTML = rows.slice(0, newsShown).map(newsRow).join("") || `<p class="muted">아직 소식이 없어요.</p>`;
+  const more = $("#news-more");
+  more.hidden = rows.length <= newsShown;
+  more.textContent = `더 보기 (${Math.min(newsShown, rows.length)} / ${rows.length})`;
+  const home = $("#home-news");
+  if (home) home.innerHTML = NEWS.slice(0, 3).map(newsRow).join("");
+}
+
 // ===== 홈 화면 : 중요한 것만 =====
 function renderHome(works, artists, services) {
-  // 지금 NOCT : 배지(NEXT/NEW/UP)가 붙은 작업물 3개
-  const now = works.filter((w) => w.badge).slice(0, 3);
-  $("#now-grid").innerHTML = now.map(workCard).join("");
+  renderFeed(works);
 
   // 아티스트 (여러 명이어도 카드가 자동으로 늘어남)
   $("#home-artists").innerHTML = artists.map((a) => `
@@ -596,7 +670,7 @@ if (FINE_POINTER && !REDUCED) {
 
 // (4) 카드 틸트 + 유리 하이라이트 — 렌더된 카드에 적용
 function applyTilt(root = document) {
-  const cards = $$(".work, .service, .product, .tier, .duo-card, .artist-card, .home-artist-card, .tile, .schedule-item", root);
+  const cards = $$(".work, .service, .product, .tier, .duo-card, .artist-card, .home-artist-card, .tile, .schedule-item, .feed-item", root);
   cards.forEach((card) => {
     card.classList.add("tilt");
     if (card.matches(".artist-card, .duo-card")) card.classList.add("bracket");
@@ -625,13 +699,14 @@ function applyAssets(assets) {
 // ===== 시작 =====
 (async () => {
   try {
-    const [artists, works, services, licensing, store, assets] = await Promise.all([
+    const [artists, works, services, licensing, store, assets, news] = await Promise.all([
       loadJSON("data/artists.json"),
       loadJSON("data/works.json"),
       loadJSON("data/services.json"),
       loadJSON("data/licensing.json"),
       loadJSON("data/store.json"),
       loadJSON("data/assets.json").catch(() => ({})), // 아직 없으면 무시
+      loadJSON("data/news.json").catch(() => []),
     ]);
     renderArtists(artists);
     renderWorks(works);
@@ -640,6 +715,7 @@ function applyAssets(assets) {
     renderCatalog();
     renderStore(store);
     renderHome(works, artists, services);
+    buildNews(news, works); renderNews();
     renderSchedule(works);
     renderCoverflow(works);
     applyAssets(assets);
@@ -655,6 +731,11 @@ function applyAssets(assets) {
     }));
     $("#page-size").addEventListener("change", (e) => { catSize = e.target.value === "all" ? "all" : Number(e.target.value); catPage = 1; renderCatalog(); });
     $("#pick-inquire").addEventListener("click", inquirePicked);
+    $$("#news-filter .chip").forEach((chip) => chip.addEventListener("click", () => {
+      $$("#news-filter .chip").forEach((c) => c.classList.remove("active"));
+      chip.classList.add("active"); newsTag = chip.dataset.tag; newsShown = 12; renderNews();
+    }));
+    $("#news-more").addEventListener("click", () => { newsShown += 12; renderNews(); });
     $("#pick-clear").addEventListener("click", () => { PICKED.clear(); updatePickBar(); });
   } catch (err) {
     console.error(err);

@@ -11,7 +11,8 @@
     "artist": "SHINYA",
     "release": "2026-09-11",
     "presave": "https://distrokid.com/hyperfollow/shinya1/paper-luck",
-    "albumId": "club-1"
+    "albumId": "club-1",
+    "description": "새 라인 SHINYA CLUB의 시작 — 128 BPM 저지 클럽 7곡. 복권, 접힌 확률, 한 손에 쥘 수 있는 운."
   },
   {
     "type": "music",
@@ -24,17 +25,20 @@
     "link": "https://www.youtube.com/watch?v=aR959SVwtuE",
     "artist": "SHINYA",
     "release": "2026-09-04",
-    "albumId": "orig-5"
+    "albumId": "orig-5",
+    "description": "같은 새벽 세 시, 여덟 개의 방 — 처음으로 남의 밤을 부른다. 마지막 방은 당신의 방."
   },
   {
     "type": "webtoon",
     "title": "SHINYA — 붉은 눈이 뜨이는 밤",
-    "subtitle": "1부 2화 「그림자를 쫓는 자」 연재 중",
-    "date": "2026.09.04",
-    "badge": "UP",
-    "cover": "https://shinya-music.com/images/webtoon/ep02-cover.jpg",
-    "link": "https://shinya-music.com/ko/webtoon/",
-    "artist": "SHINYA"
+    "subtitle": "1부 3화 「그들이 오는 밤」",
+    "date": "2026.09.07",
+    "release": "2026-09-07",
+    "cover": "https://shinya-music.com/images/webtoon/ep03-cover.jpg",
+    "link": "https://shinya-music.com/ko/webtoon/ep03/",
+    "artist": "SHINYA",
+    "description": "밤 11시. 이 도시의 밤은 언제나 무언가를 숨기고 있다. 붉은 눈이 뜨이는 순간, 삼십 년을 기다린 밤이 시작된다. #다크판타지 #오컬트 #심야",
+    "badge": "UP"
   },
   {
     "type": "video",
@@ -43,7 +47,8 @@
     "date": "2026.09",
     "cover": "https://shinya-music.com/images/covers/shinya-mix-vol5.jpg",
     "link": "https://www.youtube.com/watch?v=aR959SVwtuE",
-    "artist": "SHINYA"
+    "artist": "SHINYA",
+    "description": "SHINYA YouTube 채널의 전곡 영상."
   },
   {
     "type": "music",
@@ -56,7 +61,8 @@
     "artist": "SHINYA",
     "release": "2026-09-18",
     "presave": "https://distrokid.com/hyperfollow/shinya1/second-wind",
-    "albumId": "club-2"
+    "albumId": "club-2",
+    "description": "머리가 허락하기 전에 몸이 먼저 답한다. 128 BPM 저지 클럽 7곡이 하룻밤을 순서대로 지난다 — 못 움직이는 밤에서, 이유 없이 돌아온 숨을 지나, 안 자고 맞은 아침까지."
   },
   {
     "type": "music",
@@ -69,7 +75,8 @@
     "artist": "SHINYA",
     "release": "2026-09-25",
     "presave": "https://distrokid.com/hyperfollow/shinya1/blue-hour",
-    "albumId": "after-1"
+    "albumId": "after-1",
+    "description": "세 번째 라인 SHINYA AFTER의 시작 — 클럽이 끝난 뒤의 한 시간. 해뜨기 직전 블루아워 안에서만 일어나는 72 BPM 다크 R&B 7곡. 끝나는 중인 방에 둘이 있다."
   },
   {
     "type": "music",
@@ -82,7 +89,8 @@
     "artist": "SHINYA",
     "release": "2026-10-02",
     "presave": "https://distrokid.com/hyperfollow/shinya1/empty-room",
-    "albumId": "after-2"
+    "albumId": "after-2",
+    "description": "두 번째 AFTER — 짐을 다 뺀 방에서 보내는 마지막 밤. 72 BPM 다크 R&B 7곡이 하룻밤을 시간 순서대로 지난다. 바닥의 상자 세 개에서, 불을 끄고 나가기까지."
   },
   {
     "type": "music",
@@ -94,7 +102,8 @@
     "link": "https://shinya-music.com/ko/music/",
     "artist": "SHINYA",
     "release": "2026-10-09",
-    "albumId": "orig-6"
+    "albumId": "orig-6",
+    "description": "새벽 4시부터 5시까지, 밤에서 유일하게 선택이 남은 한 시간 — 68~96 BPM 일곱 곡이 혼자서, 커튼을 연 채로 끝난다."
   },
   {
     "type": "music",
@@ -106,18 +115,21 @@
     "link": "https://shinya-music.com/ko/music/",
     "artist": "SHINYA",
     "release": "2026-10-16",
-    "albumId": "after-3"
+    "albumId": "after-3",
+    "description": "세 번째 AFTER — 지구 한쪽에서 밤이 끝나고 반대쪽에서는 오후가 이어지는 한 시간. 68~78 BPM 다크 R&B 7곡이 움직이지 않는 사실 하나를 일곱 번 만진다 — 끝나는 건 나뿐이다."
   },
   {
     "type": "music",
     "line": "ORIGINAL",
     "title": "おやすみのあとで",
-    "subtitle": "SHINYA 4집",
-    "date": "2026",
+    "subtitle": "SHINYA 4집 · 잘 자, 그 뒤에",
+    "date": "2026.08.28",
     "cover": "https://shinya-music.com/images/covers/album-4.jpg",
     "link": "https://www.youtube.com/watch?v=PVwJ5X9T6dA",
     "artist": "SHINYA",
-    "albumId": "orig-4"
+    "albumId": "orig-4",
+    "release": "2026-08-28",
+    "description": "함께가 된 뒤의 하룻밤 일곱 곡 — 끊지 못하는 통화에서 둘이서 배웅하는 첫차까지."
   },
   {
     "type": "video",
@@ -126,49 +138,47 @@
     "date": "2026",
     "cover": "https://shinya-music.com/images/covers/album-4.jpg",
     "link": "https://www.youtube.com/watch?v=PVwJ5X9T6dA",
-    "artist": "SHINYA"
+    "artist": "SHINYA",
+    "description": "SHINYA YouTube 채널의 전곡 영상."
   },
   {
     "type": "music",
     "line": "ORIGINAL",
     "title": "怖いままで",
-    "subtitle": "SHINYA 3집",
-    "date": "2026",
+    "subtitle": "SHINYA 3집 · 무서운 채로",
+    "date": "2026.08.21",
     "cover": "https://shinya-music.com/images/covers/album-3.jpg",
     "link": "https://www.youtube.com/watch?v=M4s5tCBoHoY",
     "artist": "SHINYA",
-    "albumId": "orig-3"
+    "albumId": "orig-3",
+    "release": "2026-08-21",
+    "description": "새벽 1시부터 5시까지, 또 좋아하게 되는 게 무서운 하룻밤의 일곱 곡."
   },
   {
     "type": "music",
     "line": "ORIGINAL",
     "title": "始発まで",
-    "subtitle": "SHINYA 2집",
-    "date": "2026",
+    "subtitle": "SHINYA 2집 · 첫차까지",
+    "date": "2026.08.14",
     "cover": "https://shinya-music.com/images/covers/album-2.jpg",
     "link": "https://www.youtube.com/watch?v=a8MX1d4HMtE",
     "artist": "SHINYA",
-    "albumId": "orig-2"
+    "albumId": "orig-2",
+    "release": "2026-08-14",
+    "description": "자정부터 첫차까지, 잠들지 못한 하룻밤의 일곱 곡."
   },
   {
     "type": "music",
     "line": "ORIGINAL",
     "title": "SHINYA 深夜",
     "subtitle": "SHINYA 1집",
-    "date": "2026",
+    "date": "2026.08.07",
     "cover": "https://shinya-music.com/images/covers/album-1.jpg",
     "link": "https://www.youtube.com/watch?v=eSuk6hPMKdg",
     "artist": "SHINYA",
-    "albumId": "orig-1"
-  },
-  {
-    "type": "webtoon",
-    "title": "SHINYA — 붉은 눈이 뜨이는 밤",
-    "subtitle": "1부 1화",
-    "date": "2026.08",
-    "cover": "https://shinya-music.com/images/webtoon/ep01-cover.jpg",
-    "link": "https://shinya-music.com/ko/webtoon/ep01/",
-    "artist": "SHINYA"
+    "albumId": "orig-1",
+    "release": "2026-08-07",
+    "description": "자정 이후의 시간을 위한 일곱 곡 — 밤이 시작되는 앨범."
   },
   {
     "type": "video",
@@ -177,6 +187,29 @@
     "date": "채널",
     "cover": "https://shinya-music.com/images/home/rooftop.jpg",
     "link": "https://www.youtube.com/@shinyatokyo",
-    "artist": "SHINYA"
+    "artist": "SHINYA",
+    "description": "SHINYA YouTube 채널의 전곡 영상."
+  },
+  {
+    "type": "webtoon",
+    "title": "SHINYA — 붉은 눈이 뜨이는 밤",
+    "subtitle": "1부 2화 「그림자를 쫓는 자」",
+    "date": "2026.09.04",
+    "release": "2026-09-04",
+    "cover": "https://shinya-music.com/images/webtoon/ep02-cover.jpg",
+    "link": "https://shinya-music.com/ko/webtoon/ep02/",
+    "artist": "SHINYA",
+    "description": "밤 11시. 이 도시의 밤은 언제나 무언가를 숨기고 있다. 붉은 눈이 뜨이는 순간, 삼십 년을 기다린 밤이 시작된다. #다크판타지 #오컬트 #심야"
+  },
+  {
+    "type": "webtoon",
+    "title": "SHINYA — 붉은 눈이 뜨이는 밤",
+    "subtitle": "1부 1화 「붉은 눈이 뜨이는 밤」",
+    "date": "2026.09.01",
+    "release": "2026-09-01",
+    "cover": "https://shinya-music.com/images/webtoon/ep01-cover.jpg",
+    "link": "https://shinya-music.com/ko/webtoon/ep01/",
+    "artist": "SHINYA",
+    "description": "밤 11시. 이 도시의 밤은 언제나 무언가를 숨기고 있다. 붉은 눈이 뜨이는 순간, 삼십 년을 기다린 밤이 시작된다. #다크판타지 #오컬트 #심야"
   }
 ]
