@@ -7,6 +7,7 @@
     "tagline": "자정 이후를 위한 다크 일렉트로닉 J-POP",
     "desc": "도쿄의 심야를 노래하는 아티스트. 午前 0時부터 첫차가 올 때까지, 밤의 시간대를 앨범 단위로 기록합니다. Original · CLUB · AFTER 세 라인으로 40곡 이상을 발표했고, 웹툰과 비하인드 블로그로 세계관을 확장하고 있어요.",
     "image": "https://shinya-music.com/images/hero-character.jpg",
+    "imagePos": "center",
     "lines": ["ORIGINAL", "CLUB", "AFTER", "WEBTOON"],
     "links": {
       "site": "https://shinya-music.com/ko/",

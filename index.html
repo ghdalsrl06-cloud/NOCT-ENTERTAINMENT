@@ -85,7 +85,7 @@
       <!-- 지금 NOCT : 다음 발매 · 웹툰 최신화 · 최신 영상 -->
       <div class="section home-now">
         <div class="section-head row-head">
-          <div><p class="eyebrow">NOW</p><h2>지금 NOCT</h2></div>
+          <div><p class="eyebrow">NOW</p><h2>지금 NOCT</h2><p id="next-release" class="next-release"></p></div>
           <a href="#works" class="btn btn-sm">작업 전체 보기 →</a>
         </div>
         <div id="now-grid" class="now-grid"><!-- JS가 채움 --></div>
@@ -94,7 +94,11 @@
       <!-- 아티스트 한 줄 -->
       <div class="section-alt">
         <div class="section home-artist">
-          <div id="home-artist" class="home-artist-card"><!-- JS가 채움 --></div>
+          <div class="section-head row-head">
+            <div><p class="eyebrow">ARTISTS</p><h2>아티스트</h2></div>
+            <a href="#artists" class="btn btn-sm">전체 보기 →</a>
+          </div>
+          <div id="home-artists" class="home-artist-list"><!-- JS가 아티스트 수만큼 채움 --></div>
         </div>
       </div>
 
@@ -142,6 +146,8 @@
           <h2>작업</h2>
           <p class="section-desc">음반, 웹툰, 영상 — NOCT가 만든 것들.</p>
         </div>
+        <!-- 발매 일정 : 앨범마다 다른 프리세이브 링크를 D-day와 함께 (JS가 works.json에서 계산) -->
+        <div id="release-schedule" class="schedule"></div>
         <div class="filter" id="works-filter">
           <button class="chip active" data-filter="all">전체</button>
           <button class="chip" data-filter="music">음악</button>
@@ -179,9 +185,9 @@
           <p class="section-desc">유튜브, 광고, 게임, 매장 BGM — NOCT 카탈로그의 곡을 프로젝트에 사용하세요.</p>
         </div>
         <div class="tier-grid">
-          <div class="tier"><b>크리에이터</b><p>유튜브 · SNS · 팟캐스트<br />개인 채널 사용</p><span class="tier-price">문의</span></div>
-          <div class="tier tier-featured"><b>커머셜</b><p>광고 · 매장 · 게임 · 앱<br />상업적 사용</p><span class="tier-price">문의</span></div>
-          <div class="tier"><b>미디어</b><p>방송 · 영화 · 드라마<br />OST · 삽입곡</p><span class="tier-price">문의</span></div>
+          <div class="tier"><b>크리에이터</b><p>유튜브 · SNS · 팟캐스트<br />개인 채널 사용</p><button class="btn btn-sm btn-ghost" data-contact="음원 라이선싱" data-detail="[크리에이터 라이선스] 사용 채널: / 곡: ">크리에이터 문의</button></div>
+          <div class="tier tier-featured"><b>커머셜</b><p>광고 · 매장 · 게임 · 앱<br />상업적 사용</p><button class="btn btn-sm btn-primary" data-contact="음원 라이선싱" data-detail="[커머셜 라이선스] 사용처: / 곡: / 기간: ">커머셜 문의</button></div>
+          <div class="tier"><b>미디어</b><p>방송 · 영화 · 드라마<br />OST · 삽입곡</p><button class="btn btn-sm btn-ghost" data-contact="음원 라이선싱" data-detail="[미디어 라이선스] 작품: / 곡: / 사용 장면: ">미디어 문의</button></div>
         </div>
         <div class="catalog-tools">
           <input type="search" id="track-search" placeholder="곡 제목, 앨범, 분위기로 검색" aria-label="곡 검색" />
@@ -194,7 +200,7 @@
         </div>
         <div class="table-wrap">
           <table class="catalog" id="catalog">
-            <thead><tr><th>#</th><th>곡</th><th>앨범</th><th>라인</th><th>BPM · 무드</th><th></th></tr></thead>
+            <thead><tr><th>#</th><th>곡</th><th>아티스트</th><th>앨범</th><th>라인</th><th>BPM · 무드</th><th>공개</th><th></th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
