@@ -577,7 +577,7 @@ function renderHome(works, artists, services) {
     homeArtists.innerHTML = `
     <article class="artist-hero reveal">
       <a class="artist-hero-media" href="#artists" style="--img:url('${esc(a.image)}')">
-        <img src="${esc(a.image)}" alt="${esc(a.name)}" loading="lazy" style="object-position:${esc(a.imagePos || "center")}" />
+        <img src="${esc(a.image)}" alt="${esc(a.name)}" loading="lazy" style="object-position:${esc(a.imagePos || "center")}" onload="if(this.naturalWidth>this.naturalHeight)this.parentElement.classList.add('is-wide')" />
       </a>
       <div class="artist-hero-body">
         <p class="eyebrow">${esc(a.role)}</p>
