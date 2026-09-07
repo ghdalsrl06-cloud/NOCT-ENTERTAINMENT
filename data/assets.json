@@ -1,10 +1,11 @@
 {
-  "_comment": "사이트 곳곳에 쓰이는 키비주얼·배경 이미지. 바꾸고 싶으면 주소만 교체하세요.",
+  "_comment": "사이트 곳곳에 쓰이는 키비주얼·배경·로고 이미지. 바꾸고 싶으면 주소만 교체하세요. heroLogo = 히어로 3D 로고(배경 제거본), 지우면 텍스트 로고가 보입니다.",
   "hero": "https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260907_021201_f26a3e59-9dca-41c4-af6d-839a14ceb9b7.png",
   "club": "https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260907_021201_3b54ab08-b8ca-4b02-90ca-dc8409432fdc.png",
   "partner": "https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260907_021201_9e77e890-3bda-4123-9455-ee78722e23da.png",
   "audition": "https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260907_050656_d82b24af-8715-4efe-a477-2b4a503771be.png",
   "logo3d": "https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260907_071304_7cc22afa-29a7-4d95-8787-99a89b6c2a28.png",
   "logoLockup": "https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260907_073705_9ad47269-ce50-40ae-b67c-98137106174f.png",
-  "logoNoct": "https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260907_075846_7a1b9208-46d3-4bf2-982c-ec330a6c696d.png"
+  "logoNoct": "https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260907_075846_7a1b9208-46d3-4bf2-982c-ec330a6c696d.png",
+  "heroLogo": "https://d8j0ntlcm91z4.cloudfront.net/user_3GlkPnXPJFo7VCrgoZkgPhAXpRM/hf_20260907_081712_79b5e03a-6b64-4c97-b7f3-e587a936f814.png"
 }

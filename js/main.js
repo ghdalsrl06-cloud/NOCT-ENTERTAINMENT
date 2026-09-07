@@ -812,6 +812,16 @@ function applyTilt(root = document) {
 // 이미지 에셋(키비주얼·배경)을 데이터에서 주입
 function applyAssets(assets) {
   if (assets.hero) document.documentElement.style.setProperty("--hero-img", `url("${assets.hero}")`);
+  // 히어로 로고 3D 렌더 : 로딩 성공 시에만 텍스트 로고를 대체 (실패하면 텍스트 로고 유지)
+  const heroLogo = $("#hero-logo");
+  if (heroLogo && assets.heroLogo) {
+    const img = new Image();
+    img.className = "hero-logo-img";
+    img.alt = "NOCT ENTERTAINMENT";
+    img.decoding = "async";
+    img.onload = () => { heroLogo.appendChild(img); heroLogo.classList.add("has-img"); };
+    img.src = assets.heroLogo;
+  }
   const aud = $("#audition-hero");
   if (aud && assets.audition) { aud.style.setProperty("--aud-img", `url("${assets.audition}")`); aud.classList.add("has-bg"); }
   $$(".duo-card[data-bg]").forEach((card) => {
