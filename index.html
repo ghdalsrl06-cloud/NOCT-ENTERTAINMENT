@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=2026090704" />
+  <link rel="stylesheet" href="css/style.css?v=2026090705" />
 </head>
 <body>
 
@@ -55,6 +55,8 @@
     </div>
   </header>
 
+  <!-- 홈 전체 뒤 3D 별먼지 필드 (Three.js, js/three-scenes.js) — 홈 탭에서만 보임 -->
+  <canvas id="field3d" class="field-3d" data-view="home" aria-hidden="true"></canvas>
   <main id="views">
 
     <!-- =================== HOME =================== -->
@@ -452,7 +454,7 @@
   <div class="grain" aria-hidden="true"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="js/main.js?v=2026090704"></script>
-  <script src="js/three-scenes.js?v=2026090704"></script>
+  <script src="js/main.js?v=2026090705"></script>
+  <script src="js/three-scenes.js?v=2026090705"></script>
 </body>
 </html>
