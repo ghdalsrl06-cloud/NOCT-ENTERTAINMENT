@@ -506,7 +506,7 @@ body.has-cursor .cursor-glow { opacity: 1; }
    3D 요소
    ===================================================== */
 /* A) 히어로 3D 오브젝트 : 글자 뒤 */
-.hero-3d { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: .95; }
+.hero-3d { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: .72; }
 .hero-title { text-shadow: 0 0 36px rgba(10, 11, 16, .9), 0 0 80px rgba(10, 11, 16, .7); display: inline-flex; align-items: center; }
 /* 히어로 타이틀의 C = 달 마크 (글자 크기를 따라 커짐, 은은한 글로우) */
 .hero-c { width: .8em; height: .8em; margin: 0 -.02em 0 .02em; filter: drop-shadow(0 0 18px rgba(111,140,255,.55)); }
@@ -910,7 +910,10 @@ h2.h3 { font-size: 1.6rem; }
 .hero-logo { display: flex; flex-direction: column; align-items: center; }
 .hero-logo-img { order: -1; }
 /* 렌더 PNG는 위·아래 투명 여백이 큼(위 25%, 아래 40%) → 음수 마진으로 상쇄해 글자 기준으로 배치 */
-.hero-logo-img { display: block; width: min(880px, 100vw); height: auto; margin: -13% auto -22%; animation: rise .9s ease .1s both; filter: drop-shadow(0 0 40px rgba(111,140,255,.25)); }
+.hero-logo-img { display: block; position: relative; z-index: 1; width: min(940px, 100vw); height: auto; margin: -13% auto -22%; animation: rise .9s ease .1s both; filter: drop-shadow(0 0 2px rgba(10,11,16,.9)) drop-shadow(0 6px 22px rgba(10,11,16,.95)) drop-shadow(0 0 40px rgba(111,140,255,.25)); }
+/* 로고 뒤 어두운 헤일로 : 3D 오브젝트·코어 글로우 위에서도 글자가 또렷하게 */
+.hero-logo::before { content: ""; position: absolute; left: 50%; top: 50%; width: 120%; height: 150%; transform: translate(-50%, -52%); background: radial-gradient(closest-side, rgba(10,11,16,.92), rgba(10,11,16,.7) 55%, transparent 100%); pointer-events: none; }
+.hero-logo .hero-sub, .hero-logo .hero-title { position: relative; z-index: 1; }
 .hero-inner { max-width: 880px; }
 @media (max-width: 560px) { .hero-logo-img { width: 100%; margin: -13% 0 -22%; } .hero-logo { width: 100%; } }
 
