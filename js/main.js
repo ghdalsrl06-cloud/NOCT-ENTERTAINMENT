@@ -198,6 +198,69 @@ function renderStore(list) {
     </article>`).join("");
 }
 
+// ===== 3D 앨범 커버플로우 (작업 탭) =====
+// CSS 3D 변환만으로 만든 캐러셀. 가운데 앨범을 클릭하면 링크로, 옆 앨범을 클릭하면 그 앨범이 가운데로.
+function renderCoverflow(works) {
+  const root = $("#coverflow");
+  if (!root) return;
+  const albums = works.filter((w) => w.type === "music");
+  if (!albums.length) { root.hidden = true; return; }
+  root.innerHTML = `
+    <div class="cf-stage">
+      ${albums.map((w, i) => `
+        <div class="cf-item" data-i="${i}" style="--img:url('${esc(w.cover)}')">
+          <img src="${esc(w.cover)}" alt="${esc(w.title)}" loading="lazy" />
+        </div>`).join("")}
+    </div>
+    <button class="cf-nav cf-prev" aria-label="이전 앨범">‹</button>
+    <button class="cf-nav cf-next" aria-label="다음 앨범">›</button>
+    <div class="cf-info">
+      <span class="work-kind cf-kind"></span>
+      <b class="cf-title"></b>
+      <small class="cf-sub"></small>
+      <div class="cf-actions"></div>
+    </div>`;
+  const items = $$(".cf-item", root);
+  let active = 0, timer = null;
+
+  function update() {
+    items.forEach((el, i) => {
+      const o = i - active, a = Math.abs(o);
+      el.style.transform = `translateX(calc(${o} * var(--cf-gap))) translateZ(${-a * 150}px) rotateY(${o * -40}deg)`;
+      el.style.zIndex = 100 - a;
+      el.style.opacity = a > 3 ? 0 : 1 - a * 0.18;
+      el.style.visibility = a > 3 ? "hidden" : "visible"; // 멀리 있는 앨범은 클릭도 막음
+      el.classList.toggle("is-active", o === 0);
+    });
+    const w = albums[active], soon = isUpcoming(w.release);
+    $(".cf-kind", root).textContent = `${w.line || "MUSIC"} · ${w.artist || ""}${soon ? ` · ${fmtMD(w.release)} 공개` : ""}`;
+    $(".cf-title", root).textContent = w.title;
+    $(".cf-sub", root).textContent = w.subtitle || "";
+    $(".cf-actions", root).innerHTML = soon
+      ? (w.presave ? `<a class="btn btn-sm btn-primary" href="${esc(w.presave)}" target="_blank" rel="noopener">프리세이브</a>`
+                   : `<button class="btn btn-sm btn-ghost" data-contact="스토어 · 굿즈" data-detail="[발매 알림] ${esc(w.title)}">발매 알림</button>`)
+      : `<a class="btn btn-sm btn-primary" href="${esc(w.link)}" target="_blank" rel="noopener">▶ 듣기</a>`;
+  }
+  const go = (n) => { active = (n + albums.length) % albums.length; update(); };
+  items.forEach((el) => el.addEventListener("click", () => {
+    const i = Number(el.dataset.i);
+    if (i === active) { if (albums[i].link) window.open(albums[i].link, "_blank", "noopener"); }
+    else go(i);
+  }));
+  $(".cf-prev", root).addEventListener("click", () => go(active - 1));
+  $(".cf-next", root).addEventListener("click", () => go(active + 1));
+  root.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") { e.preventDefault(); go(active - 1); }
+    if (e.key === "ArrowRight") { e.preventDefault(); go(active + 1); }
+  });
+  // 작업 탭이 보이는 동안 5초마다 자동으로 넘김 (마우스를 올리면 멈춤)
+  let hover = false;
+  root.addEventListener("pointerenter", () => { hover = true; });
+  root.addEventListener("pointerleave", () => { hover = false; });
+  timer = setInterval(() => { if (!hover && !document.hidden && !root.closest(".view[hidden]") && !REDUCED) go(active + 1); }, 5000);
+  update();
+}
+
 // ===== 홈 화면 : 중요한 것만 =====
 function renderHome(works, artists, services) {
   // 지금 NOCT : 배지(NEXT/NEW/UP)가 붙은 작업물 3개
@@ -428,6 +491,7 @@ function applyAssets(assets) {
     renderStore(store);
     renderHome(works, artists, services);
     renderSchedule(works);
+    renderCoverflow(works);
     applyAssets(assets);
     applyTilt();
     bindContactShortcuts();

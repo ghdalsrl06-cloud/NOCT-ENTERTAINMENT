@@ -467,6 +467,57 @@ body.has-cursor .cursor-glow { opacity: 1; }
 }
 @media (max-width: 560px) { .tile-grid { grid-template-columns: 1fr; } }
 
+/* =====================================================
+   3D 요소
+   ===================================================== */
+/* A) 히어로 3D 오브젝트 : 글자 뒤 */
+.hero-3d { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: .95; }
+.hero-title { text-shadow: 0 0 36px rgba(10, 11, 16, .9), 0 0 80px rgba(10, 11, 16, .7); }
+.hero-tagline, .hero-desc { text-shadow: 0 0 18px rgba(10, 11, 16, .9); }
+
+/* C) 지구본 : 문의 배너 오른쪽 */
+.cta-band.has-globe { position: relative; overflow: hidden; }
+.globe-3d { position: absolute; right: 200px; top: 50%; width: 340px; height: 340px; transform: translateY(-50%); pointer-events: none; opacity: .9; }
+.cta-band.has-globe > div { position: relative; z-index: 1; }
+
+/* B) 앨범 커버플로우 */
+.cf-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; font-size: .82rem; margin-bottom: 10px; }
+.coverflow {
+  --cf-gap: 200px; --cf-size: 250px;
+  position: relative; height: calc(var(--cf-size) + 190px); margin-bottom: 40px; outline: none;
+  perspective: 1200px; perspective-origin: 50% 40%;
+  overflow: hidden; /* 옆으로 밀려난 앨범이 페이지 폭을 늘리지 않게 */
+}.coverflow:focus-visible { box-shadow: 0 0 0 2px var(--accent); border-radius: 16px; }
+.cf-stage { position: absolute; left: 0; right: 0; top: 20px; height: var(--cf-size); transform-style: preserve-3d; display: flex; justify-content: center; }
+.cf-item {
+  position: absolute; top: 0; width: var(--cf-size); height: var(--cf-size); border-radius: 12px; overflow: hidden;
+  background: var(--surface-2); cursor: pointer; border: 1px solid var(--line);
+  transition: transform .65s cubic-bezier(.2, .8, .2, 1), opacity .45s;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, .65);
+  -webkit-box-reflect: below 8px linear-gradient(transparent 62%, rgba(0, 0, 0, .28)); /* 바닥 반사 (지원 브라우저) */
+}
+.cf-item::before { content: ""; position: absolute; inset: -12%; background: var(--img) center / cover no-repeat; filter: blur(22px) brightness(.45); }
+.cf-item img { position: relative; width: 100%; height: 100%; object-fit: contain; display: block; }
+.cf-item.is-active { border-color: var(--accent); box-shadow: 0 30px 70px rgba(0, 0, 0, .65), 0 0 0 1px var(--accent), 0 0 40px rgba(111, 140, 255, .25); }
+.cf-nav {
+  position: absolute; top: calc(20px + var(--cf-size) / 2); transform: translateY(-50%); width: 42px; height: 42px; border-radius: 50%;
+  border: 1px solid var(--line); background: rgba(20, 22, 31, .85); color: var(--text); font-size: 1.4rem; cursor: pointer; z-index: 200;
+  transition: border-color .2s, color .2s;
+}
+.cf-nav:hover { border-color: var(--accent); color: var(--accent); }
+.cf-prev { left: 0; } .cf-next { right: 0; }
+.cf-info { position: absolute; left: 0; right: 0; bottom: 0; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.cf-info .cf-title { font-size: 1.15rem; font-weight: 500; }
+.cf-info .cf-sub { color: var(--muted); font-size: .85rem; }
+.cf-actions { margin-top: 8px; }
+
+@media (max-width: 1000px) { .globe-3d { right: 40px; width: 280px; height: 280px; opacity: .55; } }
+@media (max-width: 820px) {
+  .coverflow { --cf-gap: 130px; --cf-size: 190px; }
+  .globe-3d { right: -60px; top: -40px; transform: none; width: 240px; height: 240px; opacity: .35; }
+}
+@media (max-width: 560px) { .coverflow { --cf-gap: 95px; --cf-size: 150px; } }
+
 /* ===== 반응형 ===== */
 @media (max-width: 1000px) {
   .works-grid, .service-grid, .store-grid, .process { grid-template-columns: repeat(2, 1fr); }
